@@ -8,9 +8,9 @@ public class Set {
     private double weight;
 
 
-    public Set(int exerciseId, String date) {
+    public Set(int exerciseId) {
         this.exerciseId = exerciseId;
-        this.date = date;
+        this.date = "none";
         this.reps = 0;
         this.weight = 0;
     }

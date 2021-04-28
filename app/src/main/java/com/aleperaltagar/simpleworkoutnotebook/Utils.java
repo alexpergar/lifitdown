@@ -29,6 +29,27 @@ public class Utils {
     private static void initAllItems(Context context) {
         ArrayList<Exercise> allItems = new ArrayList<>();
 
+        Exercise benchPress = new Exercise("Bench press");
+        Set set1 = new Set(1);
+        set1.setReps(10);
+        set1.setWeight(20);
+        ArrayList<Set> benchSets = new ArrayList<>();
+        benchSets.add(set1);
+        benchSets.add(set1);
+        benchSets.add(set1);
+        benchSets.add(set1);
+        benchPress.setSets(benchSets);
+        allItems.add(benchPress);
+
+
+        Exercise pullUp = new Exercise("Pull up");
+        pullUp.setSets(benchSets);
+        allItems.add(pullUp);
+
+        Exercise squat = new Exercise("Squat");
+        squat.setSets(benchSets);
+        allItems.add(squat);
+
         SharedPreferences sharedPreferences = context.getSharedPreferences(DB_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(ALL_ITEMS_KEY, gson.toJson(allItems));
