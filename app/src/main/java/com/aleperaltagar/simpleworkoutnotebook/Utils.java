@@ -2,15 +2,19 @@ package com.aleperaltagar.simpleworkoutnotebook;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class Utils {
 
+    private static final String TAG = "Utils";
+    
     private static int ID = 0;
 
     private static final String DB_NAME = "fake_database";
@@ -23,6 +27,7 @@ public class Utils {
         ArrayList<Exercise> allItems = gson.fromJson(sharedPreferences.getString(ALL_ITEMS_KEY, null), exercisesType);
         if (null == allItems) {
             initAllItems(context);
+            Log.i(TAG, "initSharedPreferences: Shared preferences initiated from zero");
         }
     }
 
@@ -60,7 +65,21 @@ public class Utils {
         SharedPreferences sharedPreferences = context.getSharedPreferences(DB_NAME, Context.MODE_PRIVATE);
         ArrayList<Exercise> allItems = gson.fromJson(sharedPreferences.getString(ALL_ITEMS_KEY, null), exercisesType);
         return allItems;
+    }
 
+    public static boolean addExercise(Context context, Exercise exercise) {
+        ArrayList<Exercise> allItems = getAllItems(context);
+        if (null != allItems) {
+            if (allItems.add(exercise)) {
+                SharedPreferences sharedPreferences = context.getSharedPreferences(DB_NAME, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.remove(DB_NAME);
+                editor.putString(ALL_ITEMS_KEY, gson.toJson(allItems));
+                editor.commit();
+                return true;
+            }
+        }
+        return false;
     }
 
     public static int getID() {

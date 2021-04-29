@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -56,6 +57,15 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
     public void setItems(ArrayList<Exercise> items) {
         this.items = items;
         notifyDataSetChanged();
+    }
+
+    // Used to add an empty exercise in the recycler view
+    public void addNewExercise(Exercise exercise) {
+        items.add(items.size(), exercise);
+        notifyItemInserted(items.size());
+        if (Utils.addExercise(context, exercise)) {
+            Toast.makeText(context, "Exercise created", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

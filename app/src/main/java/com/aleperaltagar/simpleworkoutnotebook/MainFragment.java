@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +19,7 @@ public class MainFragment extends Fragment {
 
     private RecyclerView exercisesRecView;
     private ExerciseAdapter exercisesAdapter;
+    private ImageView btnAddExercise;
 
     @Nullable
     @Override
@@ -25,6 +28,14 @@ public class MainFragment extends Fragment {
 
         initViews(view);
         initRecViews();
+
+        btnAddExercise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Exercise example = new Exercise("Example");
+                exercisesAdapter.addNewExercise(example);
+            }
+        });
 
         return view;
     }
@@ -42,5 +53,6 @@ public class MainFragment extends Fragment {
 
     private void initViews(View view) {
         exercisesRecView = view.findViewById(R.id.exercisesRecView);
+        btnAddExercise = view.findViewById(R.id.btnAddExercise);
     }
 }
