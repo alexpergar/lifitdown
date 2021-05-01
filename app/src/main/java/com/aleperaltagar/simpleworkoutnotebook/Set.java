@@ -2,17 +2,26 @@ package com.aleperaltagar.simpleworkoutnotebook;
 
 public class Set {
 
+    private int id;
     private int exerciseId;
     private String date;
     private int reps;
     private double weight;
 
-
     public Set(int exerciseId) {
+        this.id = Utils.getSetID();
         this.exerciseId = exerciseId;
         this.date = "none";
         this.reps = 0;
         this.weight = 0;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getExerciseId() {

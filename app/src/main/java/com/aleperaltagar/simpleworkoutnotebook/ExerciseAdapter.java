@@ -1,9 +1,12 @@
 package com.aleperaltagar.simpleworkoutnotebook;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +22,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
 
     private ArrayList<Exercise> items = new ArrayList<>();
     private Context context;
-    private SetAdapter setsAdapter;
 
     public ExerciseAdapter(Context context) {
         this.context = context;
@@ -34,6 +36,8 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
+        // Name of the exercise
         holder.exerciseName.setText(items.get(position).getName());
         holder.exerciseName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,10 +46,37 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
             }
         });
 
-        setsAdapter = new SetAdapter(context);
+        // Setting the sets recyclerview
+        SetAdapter setsAdapter = new SetAdapter(context, items.get(position).getId());
         setsAdapter.setItems(items.get(position).getSets());
         holder.setsRecView.setAdapter(setsAdapter);
         holder.setsRecView.setLayoutManager((new LinearLayoutManager(context, RecyclerView.VERTICAL, false)));
+
+        // Enter edit mode
+        holder.parent.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                holder.parent.setCardBackgroundColor(Color.parseColor("#f2e8da"));
+                holder.btnConfirmEdit.setVisibility(View.VISIBLE);
+                holder.exerciseName.setFocusableInTouchMode(true);
+                holder.exerciseName.setClickable(true);
+                setsAdapter.enableEdition(true);
+                return true;
+            }
+        });
+
+        // Exit edit mode
+        holder.btnConfirmEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.parent.setCardBackgroundColor(Color.WHITE);
+                holder.btnConfirmEdit.setVisibility(View.GONE);
+                holder.exerciseName.setFocusable(false);
+                holder.exerciseName.setClickable(false);
+                setsAdapter.enableEdition(false);
+                notifyDataSetChanged();
+            }
+        });
     }
 
 
@@ -70,15 +101,17 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView exerciseName;
+        private EditText exerciseName;
         private MaterialCardView parent;
         private RecyclerView setsRecView;
+        private ImageView btnConfirmEdit;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             exerciseName = itemView.findViewById(R.id.exerciseName);
             parent = itemView.findViewById(R.id.parent);
             setsRecView = itemView.findViewById(R.id.setsRecView);
+            btnConfirmEdit = itemView.findViewById(R.id.btnConfirmEdit);
         }
     }
 }

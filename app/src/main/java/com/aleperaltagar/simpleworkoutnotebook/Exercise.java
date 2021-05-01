@@ -9,7 +9,7 @@ public class Exercise {
     private ArrayList<Set> sets;
 
     public Exercise(String name) {
-        this.id = Utils.getID();
+        this.id = Utils.getExerciseID();
         this.name = name;
         this.sets = new ArrayList<>();
     }

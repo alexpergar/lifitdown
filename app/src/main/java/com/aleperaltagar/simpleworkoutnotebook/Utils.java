@@ -15,7 +15,8 @@ public class Utils {
 
     private static final String TAG = "Utils";
     
-    private static int ID = 0;
+    private static int ID_EXERCISE = 0;
+    private static int ID_SET = 0;
 
     private static final String DB_NAME = "fake_database";
     private static final String ALL_ITEMS_KEY = "all_items";
@@ -35,24 +36,42 @@ public class Utils {
         ArrayList<Exercise> allItems = new ArrayList<>();
 
         Exercise benchPress = new Exercise("Bench press");
-        Set set1 = new Set(1);
-        set1.setReps(10);
-        set1.setWeight(20);
+        Set set1bench = new Set(1);
+        Set set2bench = new Set(1);
+        Set set3bench = new Set(1);
+        set1bench.setReps(10);
+        set1bench.setWeight(20);
+        set2bench.setReps(20);
+        set2bench.setWeight(30);
+        set3bench.setReps(30);
+        set3bench.setWeight(40);
         ArrayList<Set> benchSets = new ArrayList<>();
-        benchSets.add(set1);
-        benchSets.add(set1);
-        benchSets.add(set1);
-        benchSets.add(set1);
+        benchSets.add(set1bench);
+        benchSets.add(set2bench);
+        benchSets.add(set3bench);
         benchPress.setSets(benchSets);
         allItems.add(benchPress);
 
 
         Exercise pullUp = new Exercise("Pull up");
-        pullUp.setSets(benchSets);
+        Set set1pullUp = new Set(2);
+        Set set2pullUp = new Set(2);
+        Set set3pullUp = new Set(2);
+        set1pullUp.setReps(100);
+        set1pullUp.setWeight(200);
+        set2pullUp.setReps(200);
+        set2pullUp.setWeight(300);
+        set3pullUp.setReps(300);
+        set3pullUp.setWeight(400);
+        ArrayList<Set> pullUpSets = new ArrayList<>();
+        pullUpSets.add(set1pullUp);
+        pullUpSets.add(set2pullUp);
+        pullUpSets.add(set3pullUp);
+        pullUp.setSets(pullUpSets);
         allItems.add(pullUp);
 
+
         Exercise squat = new Exercise("Squat");
-        squat.setSets(benchSets);
         allItems.add(squat);
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(DB_NAME, Context.MODE_PRIVATE);
@@ -82,8 +101,41 @@ public class Utils {
         return false;
     }
 
-    public static int getID() {
-        ID++;
-        return ID;
+    public static boolean deleteSet(Context context, int exerciseId, int setId) {
+        ArrayList<Exercise> allItems = getAllItems(context);
+        if (null != allItems) {
+            for (Exercise e : allItems) {
+                if (e.getId() == exerciseId) {
+                    int exerciseIndex = allItems.indexOf(e);
+                    ArrayList<Set> newSets = allItems.get(exerciseIndex).getSets();
+                    if (null != newSets) {
+                        for (Set set : newSets) {
+                            if (set.getId() == setId) {
+                                Log.d(TAG, "deleteSet:" + allItems.indexOf(e));
+                                SharedPreferences sharedPreferences = context.getSharedPreferences(DB_NAME, Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                newSets.remove(set);
+                                allItems.get(exerciseIndex).setSets(newSets);
+                                editor.remove(DB_NAME);
+                                editor.putString(ALL_ITEMS_KEY, gson.toJson(allItems));
+                                editor.commit();
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public static int getExerciseID() {
+        ID_EXERCISE++;
+        return ID_EXERCISE;
+    }
+
+    public static int getSetID() {
+        ID_SET++;
+        return ID_SET;
     }
 }
