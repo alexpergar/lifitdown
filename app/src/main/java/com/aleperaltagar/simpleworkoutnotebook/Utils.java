@@ -39,12 +39,12 @@ public class Utils {
         Set set1bench = new Set(1);
         Set set2bench = new Set(1);
         Set set3bench = new Set(1);
-        set1bench.setReps(10);
-        set1bench.setWeight(20);
-        set2bench.setReps(20);
-        set2bench.setWeight(30);
-        set3bench.setReps(30);
-        set3bench.setWeight(40);
+        set1bench.setReps("10");
+        set1bench.setWeight("20");
+        set2bench.setReps("20");
+        set2bench.setWeight("30");
+        set3bench.setReps("30");
+        set3bench.setWeight("40");
         ArrayList<Set> benchSets = new ArrayList<>();
         benchSets.add(set1bench);
         benchSets.add(set2bench);
@@ -57,12 +57,12 @@ public class Utils {
         Set set1pullUp = new Set(2);
         Set set2pullUp = new Set(2);
         Set set3pullUp = new Set(2);
-        set1pullUp.setReps(100);
-        set1pullUp.setWeight(200);
-        set2pullUp.setReps(200);
-        set2pullUp.setWeight(300);
-        set3pullUp.setReps(300);
-        set3pullUp.setWeight(400);
+        set1pullUp.setReps("100");
+        set1pullUp.setWeight("200");
+        set2pullUp.setReps("200");
+        set2pullUp.setWeight("300");
+        set3pullUp.setReps("300");
+        set3pullUp.setWeight("400");
         ArrayList<Set> pullUpSets = new ArrayList<>();
         pullUpSets.add(set1pullUp);
         pullUpSets.add(set2pullUp);
@@ -101,6 +101,30 @@ public class Utils {
         return false;
     }
 
+    public static boolean addSet(Context context, int exerciseId) {
+        ArrayList<Exercise> allItems = getAllItems(context);
+        if (null != allItems) {
+            for (Exercise e : allItems) {
+                if (e.getId() == exerciseId) {
+                    int exerciseIndex = allItems.indexOf(e);
+                    ArrayList<Set> newSets = allItems.get(exerciseIndex).getSets();
+                    if (null != newSets) {
+                        if (newSets.add(new Set(exerciseId))) {
+                            SharedPreferences sharedPreferences = context.getSharedPreferences(DB_NAME, Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            allItems.get(exerciseIndex).setSets(newSets);
+                            editor.remove(DB_NAME);
+                            editor.putString(ALL_ITEMS_KEY, gson.toJson(allItems));
+                            editor.commit();
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public static boolean deleteSet(Context context, int exerciseId, int setId) {
         ArrayList<Exercise> allItems = getAllItems(context);
         if (null != allItems) {
@@ -111,7 +135,6 @@ public class Utils {
                     if (null != newSets) {
                         for (Set set : newSets) {
                             if (set.getId() == setId) {
-                                Log.d(TAG, "deleteSet:" + allItems.indexOf(e));
                                 SharedPreferences sharedPreferences = context.getSharedPreferences(DB_NAME, Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                 newSets.remove(set);
@@ -127,6 +150,25 @@ public class Utils {
             }
         }
         return false;
+    }
+
+    public static boolean updateDatabase(Context context, int exerciseId, ArrayList<Set> newSets) {
+        ArrayList<Exercise> allItems = getAllItems(context);
+        if (null != allItems) {
+            for (Exercise e : allItems) {
+                if (e.getId() == exerciseId) {
+                    int exerciseIndex = allItems.indexOf(e);
+                    SharedPreferences sharedPreferences = context.getSharedPreferences(DB_NAME, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    allItems.get(exerciseIndex).setSets(newSets);
+                    editor.remove(DB_NAME);
+                    editor.putString(ALL_ITEMS_KEY, gson.toJson(allItems));
+                    editor.commit();
+                    return true;
+                }
+            }
+        }
+            return false;
     }
 
     public static int getExerciseID() {

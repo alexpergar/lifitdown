@@ -5,15 +5,15 @@ public class Set {
     private int id;
     private int exerciseId;
     private String date;
-    private int reps;
-    private double weight;
+    private String reps;
+    private String weight;
 
     public Set(int exerciseId) {
         this.id = Utils.getSetID();
         this.exerciseId = exerciseId;
         this.date = "none";
-        this.reps = 0;
-        this.weight = 0;
+        this.reps = "";
+        this.weight = "";
     }
 
     public int getId() {
@@ -40,19 +40,19 @@ public class Set {
         this.date = date;
     }
 
-    public int getReps() {
+    public String getReps() {
         return reps;
     }
 
-    public void setReps(int reps) {
+    public void setReps(String reps) {
         this.reps = reps;
     }
 
-    public double getWeight() {
+    public String getWeight() {
         return weight;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(String weight) {
         this.weight = weight;
     }
 

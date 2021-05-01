@@ -58,6 +58,13 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
             public boolean onLongClick(View v) {
                 holder.parent.setCardBackgroundColor(Color.parseColor("#f2e8da"));
                 holder.btnConfirmEdit.setVisibility(View.VISIBLE);
+                holder.btnAddSet.setVisibility(View.VISIBLE);
+                holder.btnAddSet.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        setsAdapter.addEmptySet();
+                    }
+                });
                 holder.exerciseName.setFocusableInTouchMode(true);
                 holder.exerciseName.setClickable(true);
                 setsAdapter.enableEdition(true);
@@ -71,10 +78,12 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
             public void onClick(View v) {
                 holder.parent.setCardBackgroundColor(Color.WHITE);
                 holder.btnConfirmEdit.setVisibility(View.GONE);
+                holder.btnAddSet.setVisibility(View.GONE);
                 holder.exerciseName.setFocusable(false);
                 holder.exerciseName.setClickable(false);
                 setsAdapter.enableEdition(false);
-                notifyDataSetChanged();
+                Utils.updateDatabase(context, items.get(position).getId(), items.get(position).getSets());
+                notifyDataSetChanged(); // is this necessary?
             }
         });
     }
@@ -105,6 +114,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         private MaterialCardView parent;
         private RecyclerView setsRecView;
         private ImageView btnConfirmEdit;
+        private ImageView btnAddSet;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -112,6 +122,8 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
             parent = itemView.findViewById(R.id.parent);
             setsRecView = itemView.findViewById(R.id.setsRecView);
             btnConfirmEdit = itemView.findViewById(R.id.btnConfirmEdit);
+            btnAddSet = itemView.findViewById(R.id.btnAddSet);
+
         }
     }
 }

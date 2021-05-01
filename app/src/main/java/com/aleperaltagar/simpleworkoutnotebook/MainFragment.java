@@ -32,8 +32,8 @@ public class MainFragment extends Fragment {
         btnAddExercise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Exercise example = new Exercise("Example");
-                exercisesAdapter.addNewExercise(example);
+                Exercise newExercise = new Exercise("");
+                exercisesAdapter.addNewExercise(newExercise);
             }
         });
 

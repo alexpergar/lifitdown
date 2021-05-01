@@ -1,11 +1,14 @@
 package com.aleperaltagar.simpleworkoutnotebook;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,21 +43,43 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
         holder.txtWeight.setText(String.valueOf(items.get(position).getWeight()));
         holder.txtReps.setText(String.valueOf(items.get(position).getReps()));
 
+        // Change if edit mode is enabled
         if (editable) {
             holder.txtWeight.setFocusableInTouchMode(true);
             holder.txtWeight.setClickable(true);
+            holder.txtWeight.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    items.get(position).setWeight(holder.txtWeight.getText().toString());
+                }
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
             holder.txtReps.setFocusableInTouchMode(true);
             holder.txtReps.setClickable(true);
+            holder.txtReps.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    items.get(position).setReps(holder.txtReps.getText().toString());
+                }
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
             holder.parent.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    if ( Utils.deleteSet(context, exerciseId, items.get(position).getId()) ) {
-                        items.remove(position);
-                        notifyItemRemoved(position);
-                        notifyItemRangeChanged(position, getItemCount());
-                        return true;
-                    }
-                    return false;
+                    items.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, getItemCount());
+                    return true;
                 }
             });
         } else {
@@ -73,6 +98,12 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
     public void setItems(ArrayList<Set> items) {
         this.items = items;
         notifyDataSetChanged();
+    }
+
+    public void addEmptySet() {
+        items.add(new Set(exerciseId));
+        notifyItemInserted(items.size());
+        notifyItemRangeChanged(items.size(), getItemCount());
     }
 
     public void enableEdition(boolean enable) {
