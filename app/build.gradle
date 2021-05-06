@@ -30,6 +30,15 @@ android {
 
 dependencies {
 
+    // Work manager
+    def work_version = "2.5.0"
+    implementation "androidx.work:work-runtime:$work_version"
+
+    // Room database
+    def room_version = "2.3.0"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
     // Gson
     implementation 'com.google.code.gson:gson:2.8.6'
 

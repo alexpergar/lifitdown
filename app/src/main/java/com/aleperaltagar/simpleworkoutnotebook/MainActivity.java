@@ -25,9 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
         initViews();
 
-        // Initialize database
-        Utils.initSharedPreferences(this);
-
         // Fragment manager
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new MainFragment()).commit();
 
