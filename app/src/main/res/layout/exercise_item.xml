@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:padding="5dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="5dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="18dp">
+
+        <EditText
+            android:id="@+id/exerciseName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Exercise name"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            android:hint="Exercise name"
+            android:focusable="false"
+            android:clickable="false"
+            android:background="@null"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/weight"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_settings"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/exerciseName" />
+
+        <ImageView
+            android:id="@+id/reps"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_settings"
+            app:layout_constraintStart_toEndOf="@+id/weight"
+            app:layout_constraintTop_toBottomOf="@+id/exerciseName" />
+
+        <ImageView
+            android:id="@+id/btnConfirmEdit"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_check"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/exerciseName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/exerciseName" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/setsRecView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reps" />
+
+        <ImageView
+            android:id="@+id/btnAddSet"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_add"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/setsRecView"
+            app:layout_constraintStart_toStartOf="@id/setsRecView"
+            app:layout_constraintTop_toBottomOf="@id/setsRecView" />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
