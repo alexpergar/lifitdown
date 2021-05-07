@@ -35,11 +35,10 @@ public class Exercise {
 
     // Constructor for new exercises
     @Ignore
-    public Exercise(String name) {
-        this.name = name;
+    public Exercise(Calendar calendar) {
+        this.name = "";
         this.sets = new ArrayList<>();
         // Taking today's date and truncating to zero
-        Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
