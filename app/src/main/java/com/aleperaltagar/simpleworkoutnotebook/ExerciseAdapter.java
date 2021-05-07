@@ -79,10 +79,11 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
                 holder.parent.setCardBackgroundColor(Color.WHITE);
                 holder.btnConfirmEdit.setVisibility(View.GONE);
                 holder.btnAddSet.setVisibility(View.GONE);
+                items.get(position).setName(holder.exerciseName.getText().toString());
                 holder.exerciseName.setFocusable(false);
                 holder.exerciseName.setClickable(false);
                 setsAdapter.enableEdition(false);
-                Utils.updateDatabase(context, items.get(position).getId(), items.get(position).getSets());
+                Utils.updateDatabase(context, items.get(position).getId(), holder.exerciseName.getText().toString(), items.get(position).getSets());
                 notifyDataSetChanged(); // is this necessary?
             }
         });

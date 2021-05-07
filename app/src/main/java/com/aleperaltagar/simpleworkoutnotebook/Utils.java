@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Utils {
     private static int ID_SET = 0;
@@ -25,12 +26,15 @@ public class Utils {
     }
 
 
-    public static boolean updateDatabase(Context context, int exerciseId, ArrayList<Set> newSets) {
-        Exercise item = ExercisesDatabase.getInstance(context).exerciseDao().getItemById(exerciseId);
+    public static boolean updateDatabase(Context context, int exerciseId, String name, ArrayList<Set> newSets) {
         Gson gson = new Gson();
         String newSetsJson = gson.toJson(newSets);
-        ExercisesDatabase.getInstance(context).exerciseDao().updateSets(exerciseId, newSetsJson);
+        ExercisesDatabase.getInstance(context).exerciseDao().updateSets(exerciseId, name, newSetsJson);
         return true;
+    }
+
+    public static ArrayList<Exercise> getItemsByDate(Context context, Calendar calendar) {
+        return (ArrayList<Exercise>) ExercisesDatabase.getInstance(context).exerciseDao().getItemsByDate(calendar.getTimeInMillis());
     }
 
     public static int getSetID() {

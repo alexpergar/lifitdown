@@ -40,8 +40,8 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.txtWeight.setText(String.valueOf(items.get(position).getWeight()));
-        holder.txtReps.setText(String.valueOf(items.get(position).getReps()));
+        holder.txtWeight.setText(items.get(position).getWeight());
+        holder.txtReps.setText(items.get(position).getReps());
 
         // Change if edit mode is enabled
         if (editable) {

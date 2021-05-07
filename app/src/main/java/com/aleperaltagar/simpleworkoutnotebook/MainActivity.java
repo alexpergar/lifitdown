@@ -30,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Navigation drawer
         setSupportActionBar(toolbar);
+        if (null != getSupportActionBar()) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false); // disable default bar title
+        }
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.drawer_open, R.string.drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -48,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
 
     }
 
