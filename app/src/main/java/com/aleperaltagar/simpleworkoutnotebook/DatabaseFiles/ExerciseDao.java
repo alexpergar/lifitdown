@@ -26,4 +26,7 @@ public interface ExerciseDao {
 
     @Query("SELECT * FROM exercises WHERE calendar=:calendarInLong")
     List<Exercise> getItemsByDate(long calendarInLong);
+
+    @Query("SELECT * FROM exercises WHERE name=:name")
+    List<Exercise> getItemsByName(String name);
 }

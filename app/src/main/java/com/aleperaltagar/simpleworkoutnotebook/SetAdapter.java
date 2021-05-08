@@ -53,7 +53,11 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
                 }
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    items.get(position).setWeight(holder.txtWeight.getText().toString());
+                    try {
+                        items.get(position).setWeight(holder.txtWeight.getText().toString());
+                    } catch (IndexOutOfBoundsException e){
+                        // Do nothing, this is a pseudobug when it tries to change the text of a deleted set
+                    }
                 }
                 @Override
                 public void afterTextChanged(Editable s) {
@@ -67,7 +71,11 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
                 }
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    items.get(position).setReps(holder.txtReps.getText().toString());
+                    try {
+                        items.get(position).setReps(holder.txtReps.getText().toString());
+                    } catch (IndexOutOfBoundsException e){
+                        // Do nothing
+                    }
                 }
                 @Override
                 public void afterTextChanged(Editable s) {
@@ -107,11 +115,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
     }
 
     public void enableEdition(boolean enable) {
-        if (enable) {
-            this.editable = true;
-        } else {
-            this.editable = false;
-        }
+        this.editable = enable;
         notifyDataSetChanged();
     }
 

@@ -25,7 +25,6 @@ public class Utils {
         return true;
     }
 
-
     public static boolean updateDatabase(Context context, int exerciseId, String name, ArrayList<Set> newSets) {
         Gson gson = new Gson();
         String newSetsJson = gson.toJson(newSets);
@@ -35,6 +34,10 @@ public class Utils {
 
     public static ArrayList<Exercise> getItemsByDate(Context context, Calendar calendar) {
         return (ArrayList<Exercise>) ExercisesDatabase.getInstance(context).exerciseDao().getItemsByDate(calendar.getTimeInMillis());
+    }
+
+    public static ArrayList<Exercise> getItemsByName(Context context, String name) {
+        return (ArrayList<Exercise>) ExercisesDatabase.getInstance(context).exerciseDao().getItemsByName(name);
     }
 
     public static int getSetID() {
