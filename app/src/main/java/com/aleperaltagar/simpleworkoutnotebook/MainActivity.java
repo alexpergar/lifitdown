@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -30,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Navigation drawer
         setSupportActionBar(toolbar);
+        if (null != getSupportActionBar()) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false); // disable default bar title
+        }
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.drawer_open, R.string.drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -40,7 +46,18 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()) {
                     case R.id.notebook:
-                        Toast.makeText(MainActivity.this, "Notebook selected", Toast.LENGTH_SHORT).show();
+                        Fragment notebookFragment = new MainFragment();
+                        FragmentTransaction notebookTransaction = getSupportFragmentManager().beginTransaction();
+                        notebookTransaction.replace(R.id.container , notebookFragment);
+                        notebookTransaction.addToBackStack(null);
+                        notebookTransaction.commit();
+                        break;
+                    case R.id.exercises:
+                        Fragment listOfExercisesFragment = new ListOfExercisesFragment();
+                        FragmentTransaction listOfExercisesTransaction = getSupportFragmentManager().beginTransaction();
+                        listOfExercisesTransaction.replace(R.id.container , listOfExercisesFragment);
+                        listOfExercisesTransaction.addToBackStack(null);
+                        listOfExercisesTransaction.commit();
                         break;
                     default:
                         break;
@@ -48,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
 
     }
 

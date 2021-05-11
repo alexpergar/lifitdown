@@ -23,7 +23,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
 
     private ArrayList<Set> items = new ArrayList<>();
     private Context context;
-    private boolean editable;
+    private boolean editable = false;
     private int exerciseId;
 
     public SetAdapter(Context context, int exerciseId) {
@@ -40,53 +40,45 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.txtWeight.setText(String.valueOf(items.get(position).getWeight()));
-        holder.txtReps.setText(String.valueOf(items.get(position).getReps()));
+        // Set the data for the sets
+        holder.txtWeight.setText(items.get(position).getWeight());
+        holder.txtReps.setText(items.get(position).getReps());
 
-        // Change if edit mode is enabled
-        if (editable) {
-            holder.txtWeight.setFocusableInTouchMode(true);
-            holder.txtWeight.setClickable(true);
-            holder.txtWeight.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
+        // If focus lost, save the data that was written on the EditText
+        holder.txtWeight.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
                     items.get(position).setWeight(holder.txtWeight.getText().toString());
+                    Utils.updateSets(context, exerciseId, items);
                 }
-                @Override
-                public void afterTextChanged(Editable s) {
-                }
-            });
-            holder.txtReps.setFocusableInTouchMode(true);
-            holder.txtReps.setClickable(true);
-            holder.txtReps.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+        holder.txtReps.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
                     items.get(position).setReps(holder.txtReps.getText().toString());
+                    Utils.updateSets(context, exerciseId, items);
                 }
-                @Override
-                public void afterTextChanged(Editable s) {
-                }
-            });
+            }
+        });
+
+        // If parent ExerciseAdapter is in editmode, put yourself in edit mode as well
+        if (editable) {
             holder.parent.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     items.remove(position);
+                    Utils.updateSets(context, exerciseId, items);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, getItemCount());
                     return true;
                 }
             });
         } else {
-            holder.txtWeight.setFocusable(false);
-            holder.txtWeight.setClickable(false);
-            holder.txtReps.setFocusableInTouchMode(false);
-            holder.txtReps.setClickable(false);
+            holder.parent.setOnLongClickListener(null);
         }
     }
 
@@ -102,16 +94,14 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
 
     public void addEmptySet() {
         items.add(new Set(exerciseId));
+        Utils.updateSets(context, exerciseId, items);
         notifyItemInserted(items.size());
         notifyItemRangeChanged(items.size(), getItemCount());
     }
 
-    public void enableEdition(boolean enable) {
-        if (enable) {
-            this.editable = true;
-        } else {
-            this.editable = false;
-        }
+    // Used from ExerciseAdapter
+    public void switchEditMode(boolean editMode) {
+        this.editable = editMode;
         notifyDataSetChanged();
     }
 

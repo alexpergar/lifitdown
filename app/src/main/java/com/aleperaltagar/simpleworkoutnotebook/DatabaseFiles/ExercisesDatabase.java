@@ -12,6 +12,7 @@ import com.aleperaltagar.simpleworkoutnotebook.Exercise;
 import com.aleperaltagar.simpleworkoutnotebook.Set;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -56,7 +57,7 @@ public abstract class ExercisesDatabase extends RoomDatabase {
         public void run() {
             ArrayList<Exercise> allItems = new ArrayList<>();
 
-            Exercise benchPress = new Exercise("Bench press");
+            Exercise benchPress = new Exercise(Calendar.getInstance());
             Set set1bench = new Set(1);
             Set set2bench = new Set(1);
             Set set3bench = new Set(1);
@@ -74,7 +75,7 @@ public abstract class ExercisesDatabase extends RoomDatabase {
             allItems.add(benchPress);
 
 
-            Exercise pullUp = new Exercise("Pull up");
+            Exercise pullUp = new Exercise(Calendar.getInstance());
             Set set1pullUp = new Set(2);
             Set set2pullUp = new Set(2);
             Set set3pullUp = new Set(2);
