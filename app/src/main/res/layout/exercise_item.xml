@@ -19,13 +19,25 @@
             android:id="@+id/exerciseName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Exercise name"
+            android:text="Name"
             android:textSize="21sp"
             android:textStyle="bold"
-            android:hint="Exercise name"
+            android:hint="Name"
             android:background="@null"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/buttonPreviousMarks"
+            android:layout_width="23sp"
+            android:layout_height="23sp"
+            android:src="@drawable/ic_notes"
+            app:layout_constraintBottom_toBottomOf="@+id/exerciseName"
+            app:layout_constraintLeft_toRightOf="@id/exerciseName"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.86"
+            android:layout_marginStart="10dp"/>
+
 
         <ImageView
             android:id="@+id/weight"
@@ -49,8 +61,8 @@
 
         <ImageView
             android:id="@+id/btnDeleteExercise"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginEnd="16dp"
             android:src="@drawable/ic_delete"
             android:visibility="gone"

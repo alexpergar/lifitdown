@@ -1,23 +1,46 @@
 package com.aleperaltagar.simpleworkoutnotebook;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
-
 import com.aleperaltagar.simpleworkoutnotebook.DatabaseFiles.ExercisesDatabase;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 
 public class Utils {
     private static int ID_SET = 0;
 
     public static ArrayList<Exercise> getAllItems(Context context) {
         return (ArrayList<Exercise>) ExercisesDatabase.getInstance(context).exerciseDao().getAllItems();
+    }
+
+    public static ArrayList<Exercise> getUniqueItems(Context context)  {
+        ArrayList<Exercise> uniqueExercises = new ArrayList<>();
+        ArrayList<Exercise> exercises =  (ArrayList<Exercise>) ExercisesDatabase.getInstance(context).exerciseDao().getAllItems();
+
+        // Look if it has been already added an exercise with the same name
+        for (Exercise e : exercises) {
+            boolean present = false;
+            for (Exercise ue : uniqueExercises) {
+                if (e.getName().equals(ue.getName())) {
+                    present = true;
+                    break;
+                }
+            }
+            if (!present) {
+                uniqueExercises.add(e);
+            }
+        }
+
+        // Sort the exercises alphabetically
+        uniqueExercises.sort(new Comparator<Exercise>() {
+            @Override
+            public int compare(Exercise o1, Exercise o2) {
+                return o1.getName().compareToIgnoreCase(o2.getName());
+            }
+        });
+
+        return uniqueExercises;
     }
 
     public static boolean addExercise(Context context, Exercise exercise) {

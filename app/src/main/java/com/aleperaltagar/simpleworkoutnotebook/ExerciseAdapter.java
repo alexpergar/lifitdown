@@ -40,7 +40,9 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Name of the exercise
         holder.exerciseName.setText(items.get(position).getName());
-        holder.exerciseName.setOnClickListener(new View.OnClickListener() {
+
+        // Transition to exercise's previous marks fragment when clicked
+        holder.btnPreviousMarks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Fragment exerciseFragment = new ExerciseFragment(items.get(position).getName());
@@ -126,6 +128,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         private RecyclerView setsRecView;
         private ImageView btnDeleteExercise;
         private ImageView btnAddSet;
+        private ImageView btnPreviousMarks;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -134,6 +137,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
             setsRecView = itemView.findViewById(R.id.setsRecView);
             btnDeleteExercise = itemView.findViewById(R.id.btnDeleteExercise);
             btnAddSet = itemView.findViewById(R.id.btnAddSet);
+            btnPreviousMarks = itemView.findViewById(R.id.buttonPreviousMarks);
 
         }
     }

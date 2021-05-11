@@ -33,6 +33,6 @@ public interface ExerciseDao {
     @Query("SELECT * FROM exercises WHERE calendar=:calendarInLong")
     List<Exercise> getItemsByDate(long calendarInLong);
 
-    @Query("SELECT * FROM exercises WHERE name=:name")
+    @Query("SELECT * FROM exercises WHERE name=:name ORDER BY calendar DESC")
     List<Exercise> getItemsByName(String name);
 }
