@@ -1,13 +1,11 @@
 package com.aleperaltagar.simpleworkoutnotebook;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,6 +23,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
 
     private ArrayList<Exercise> items = new ArrayList<>();
     private Context context;
+    private boolean editable;
 
     public ExerciseAdapter(Context context) {
         this.context = context;
@@ -58,43 +57,48 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         holder.setsRecView.setAdapter(setsAdapter);
         holder.setsRecView.setLayoutManager((new LinearLayoutManager(context, RecyclerView.VERTICAL, false)));
 
-        // Enter edit mode
-        holder.parent.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                holder.parent.setCardBackgroundColor(Color.parseColor("#f2e8da"));
-                holder.btnConfirmEdit.setVisibility(View.VISIBLE);
-                holder.btnAddSet.setVisibility(View.VISIBLE);
-                holder.btnAddSet.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        setsAdapter.addEmptySet();
-                    }
-                });
-                holder.exerciseName.setFocusableInTouchMode(true);
-                holder.exerciseName.setClickable(true);
-                setsAdapter.enableEdition(true);
-                return true;
-            }
-        });
-
-        // Exit edit mode
-        holder.btnConfirmEdit.setOnClickListener(new View.OnClickListener() {
+        // Button to add a new set
+        holder.btnAddSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.parent.setCardBackgroundColor(Color.WHITE);
-                holder.btnConfirmEdit.setVisibility(View.GONE);
-                holder.btnAddSet.setVisibility(View.GONE);
-                items.get(position).setName(holder.exerciseName.getText().toString());
-                holder.exerciseName.setFocusable(false);
-                holder.exerciseName.setClickable(false);
-                setsAdapter.enableEdition(false);
-                Utils.updateDatabase(context, items.get(position).getId(), holder.exerciseName.getText().toString(), items.get(position).getSets());
-                notifyDataSetChanged(); // is this necessary?
+                setsAdapter.addEmptySet();
             }
         });
+
+        // Update exercise name when focus lost
+        holder.exerciseName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus) {
+                    Utils.updateExerciseName(context, items.get(position).getId(), holder.exerciseName.getText().toString());
+                    items.get(position).setName(holder.exerciseName.getText().toString());
+                }
+            }
+        });
+
+        holder.btnDeleteExercise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.deleteExercise(context, items.get(position).getId());
+                items.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, getItemCount());
+            }
+        });
+
+        // If edit mode is enabled (through button click on menu) show the button and inform the sets adapter
+        if (editable) {
+            holder.btnDeleteExercise.setVisibility(View.VISIBLE);
+        } else {
+            holder.btnDeleteExercise.setVisibility(View.GONE);
+        }
+        setsAdapter.switchEditMode(editable);
     }
 
+    public void switchEditMode(boolean editMode) {
+        editable = editMode;
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getItemCount() {
@@ -120,7 +124,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         private EditText exerciseName;
         private MaterialCardView parent;
         private RecyclerView setsRecView;
-        private ImageView btnConfirmEdit;
+        private ImageView btnDeleteExercise;
         private ImageView btnAddSet;
 
         public ViewHolder(@NonNull View itemView) {
@@ -128,7 +132,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
             exerciseName = itemView.findViewById(R.id.exerciseName);
             parent = itemView.findViewById(R.id.parent);
             setsRecView = itemView.findViewById(R.id.setsRecView);
-            btnConfirmEdit = itemView.findViewById(R.id.btnConfirmEdit);
+            btnDeleteExercise = itemView.findViewById(R.id.btnDeleteExercise);
             btnAddSet = itemView.findViewById(R.id.btnAddSet);
 
         }

@@ -33,8 +33,10 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
     private ExerciseAdapter exercisesAdapter;
     private ImageView btnAddExercise;
     private TextView textToolbar;
-    private Fragment context;
+    private ImageView editButtonToolbar;
+    private Fragment context = this;
     private Calendar currentDay;
+    private boolean editMode = false;
 
     @Nullable
     @Override
@@ -52,12 +54,22 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
         // Initialize views for today
         initViews(view);
 
+        // Toolbar date picker on date click
         textToolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogFragment datePicker = new DatePickerFragment(currentDay);
                 datePicker.setTargetFragment(context, 1);
                 datePicker.show(getFragmentManager(), "date picker");
+            }
+        });
+
+        // Toolbar button to edit mode
+        editButtonToolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editMode = !editMode;
+                exercisesAdapter.switchEditMode(editMode);
             }
         });
 
@@ -70,6 +82,7 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
             }
         });
 
+        // Set everything for the current date
         setWorkoutDay(currentDay);
 
         return view;
@@ -90,6 +103,7 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
         exercisesRecView = view.findViewById(R.id.exercisesRecView);
         btnAddExercise = view.findViewById(R.id.btnAddExercise);
         textToolbar = getActivity().findViewById(R.id.textToolbar);
+        editButtonToolbar = getActivity().findViewById(R.id.editButtonToolbar);
         context = this;
     }
 

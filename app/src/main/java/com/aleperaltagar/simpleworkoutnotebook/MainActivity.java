@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         if (null != getSupportActionBar()) {
             getSupportActionBar().setDisplayShowTitleEnabled(false); // disable default bar title
         }
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.drawer_open, R.string.drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();

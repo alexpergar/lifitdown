@@ -25,11 +25,18 @@ public class Utils {
         return true;
     }
 
-    public static boolean updateDatabase(Context context, int exerciseId, String name, ArrayList<Set> newSets) {
+    public static void updateSets(Context context, int exerciseId, ArrayList<Set> newSets) {
         Gson gson = new Gson();
         String newSetsJson = gson.toJson(newSets);
-        ExercisesDatabase.getInstance(context).exerciseDao().updateSets(exerciseId, name, newSetsJson);
-        return true;
+        ExercisesDatabase.getInstance(context).exerciseDao().updateSets(exerciseId, newSetsJson);
+    }
+
+    public static void updateExerciseName(Context context, int exerciseId, String name) {
+        ExercisesDatabase.getInstance(context).exerciseDao().updateExerciseName(exerciseId, name);
+    }
+
+    public static void deleteExercise(Context context, int exerciseId) {
+        ExercisesDatabase.getInstance(context).exerciseDao().deleteById(exerciseId);
     }
 
     public static ArrayList<Exercise> getItemsByDate(Context context, Calendar calendar) {

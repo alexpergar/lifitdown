@@ -21,8 +21,14 @@ public interface ExerciseDao {
     @Query("SELECT * FROM exercises WHERE id=:id")
     Exercise getItemById(int id);
 
-    @Query("UPDATE exercises SET name=:name, sets=:sets WHERE id=:id")
-    void updateSets(int id, String name, String sets);
+    @Query("UPDATE exercises SET sets=:sets WHERE id=:id")
+    void updateSets(int id, String sets);
+
+    @Query("UPDATE exercises SET name=:name WHERE id=:id")
+    void updateExerciseName(int id, String name);
+
+    @Query("DELETE FROM exercises WHERE id=:id")
+    void deleteById(int id);
 
     @Query("SELECT * FROM exercises WHERE calendar=:calendarInLong")
     List<Exercise> getItemsByDate(long calendarInLong);

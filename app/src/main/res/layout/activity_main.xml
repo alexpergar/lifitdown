@@ -29,6 +29,14 @@
                 android:textStyle="bold"
                 android:layout_gravity="center"/>
 
+            <ImageView
+                android:id="@+id/editButtonToolbar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_settings"
+                android:layout_marginEnd="15dp"
+                android:layout_gravity="end"/>
+
 
         </com.google.android.material.appbar.MaterialToolbar>
 
