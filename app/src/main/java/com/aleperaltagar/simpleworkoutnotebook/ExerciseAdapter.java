@@ -1,6 +1,9 @@
 package com.aleperaltagar.simpleworkoutnotebook;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +27,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
     private ArrayList<Exercise> items = new ArrayList<>();
     private Context context;
     private boolean editable;
+    private static final String TAG = "ExerciseAdapter";
 
     public ExerciseAdapter(Context context) {
         this.context = context;
@@ -38,6 +42,9 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        // Eliminate the textWatcher, as the placeholder changes item when recycled
+        holder.exerciseName.removeTextChangedListener(holder.textWatcher);
+
         // Name of the exercise
         holder.exerciseName.setText(items.get(position).getName());
 
@@ -67,14 +74,21 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
             }
         });
 
-        // Update exercise name when focus lost
-        holder.exerciseName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        holder.exerciseName.addTextChangedListener(holder.textWatcher = new TextWatcher() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus) {
-                    Utils.updateExerciseName(context, items.get(position).getId(), holder.exerciseName.getText().toString());
-                    items.get(position).setName(holder.exerciseName.getText().toString());
-                }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Utils.updateExerciseName(context, items.get(position).getId(), holder.exerciseName.getText().toString());
+                items.get(position).setName(holder.exerciseName.getText().toString());
+                Log.d(TAG, "afterTextChanged: " + Utils.getAllItems(context));
+                Log.d(TAG, "afterTextChanged: position" + position);
             }
         });
 
@@ -114,11 +128,9 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
 
     // Used to add an empty exercise in the recycler view
     public void addNewExercise(Exercise exercise) {
-        items.add(items.size(), exercise);
-        notifyItemInserted(items.size());
-        if (Utils.addExercise(context, exercise)) {
-            Toast.makeText(context, "Exercise created", Toast.LENGTH_SHORT).show();
-        }
+        Utils.addExercise(context, exercise);
+        items.add(Utils.getLastItem(context)); // you have to take back the last record, because if you just insert "exercise" its id is 0
+        notifyItemInserted(items.size() - 1);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -129,6 +141,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         private ImageView btnDeleteExercise;
         private ImageView btnAddSet;
         private ImageView btnPreviousMarks;
+        private TextWatcher textWatcher = null;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

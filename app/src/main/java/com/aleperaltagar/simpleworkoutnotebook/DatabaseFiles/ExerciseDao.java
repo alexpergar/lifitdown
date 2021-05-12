@@ -35,4 +35,7 @@ public interface ExerciseDao {
 
     @Query("SELECT * FROM exercises WHERE name=:name ORDER BY calendar DESC")
     List<Exercise> getItemsByName(String name);
+
+    @Query("SELECT * FROM exercises ORDER BY id DESC LIMIT 1")
+    Exercise getLastItem();
 }

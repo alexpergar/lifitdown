@@ -70,6 +70,10 @@ public class Utils {
         return (ArrayList<Exercise>) ExercisesDatabase.getInstance(context).exerciseDao().getItemsByName(name);
     }
 
+    public static Exercise getLastItem(Context context) {
+        return ExercisesDatabase.getInstance(context).exerciseDao().getLastItem();
+    }
+
     public static int getSetID() {
         ID_SET++;
         return ID_SET;
