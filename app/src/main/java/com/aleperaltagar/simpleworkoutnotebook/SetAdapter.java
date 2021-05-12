@@ -1,6 +1,8 @@
 package com.aleperaltagar.simpleworkoutnotebook;
 
+import android.app.Activity;
 import android.content.Context;
+import android.media.Image;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -100,18 +102,20 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
 
         // If parent ExerciseAdapter is in editmode, put yourself in edit mode as well
         if (editable) {
-            holder.parent.setOnLongClickListener(new View.OnLongClickListener() {
+            holder.btnDeleteSet.setVisibility(View.VISIBLE);
+            holder.btnDeleteSet.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public boolean onLongClick(View v) {
+                public void onClick(View v) {
+                    View focusedView = ((Activity) context).getCurrentFocus();
+                    if (null != focusedView) focusedView.clearFocus();
                     items.remove(position);
                     Utils.updateSets(context, exerciseId, items);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, getItemCount());
-                    return true;
                 }
             });
         } else {
-            holder.parent.setOnLongClickListener(null);
+            holder.btnDeleteSet.setVisibility(View.GONE);
         }
     }
 
@@ -145,12 +149,14 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
         private MaterialCardView parent;
         private TextWatcher textWatcherWeight = null;
         private TextWatcher textWatcherReps = null;
+        private ImageView btnDeleteSet;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtWeight = itemView.findViewById(R.id.txtWeight);
             txtReps = itemView.findViewById(R.id.txtReps);
             parent = itemView.findViewById(R.id.parent);
+            btnDeleteSet = itemView.findViewById(R.id.btnDeleteSet);
         }
     }
 

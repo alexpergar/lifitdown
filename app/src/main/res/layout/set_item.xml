@@ -8,35 +8,96 @@
     android:layout_marginVertical="1dp"
     app:cardElevation="1dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="18dp">
+        android:layout_marginVertical="15dp">
+
+        <ImageView
+            android:id="@+id/btnDeleteSet"
+            android:layout_width="25dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/ic_delete"
+            android:visibility="gone"
+            android:layout_gravity="center_vertical"/>
 
         <EditText
             android:id="@+id/txtWeight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
             android:hint="00"
             android:textSize="18sp"
-            android:background="@null"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:background="@null" />
 
         <EditText
             android:id="@+id/txtReps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
+            android:layout_marginStart="40dp"
             android:hint="00"
             android:textSize="18sp"
-            android:background="@null"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/txtWeight"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:background="@null" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:hint="00"
+            android:textSize="18sp"
+            android:background="@null" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:hint="00"
+            android:textSize="18sp"
+            android:background="@null" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:hint="00"
+            android:textSize="18sp"
+            android:background="@null" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:hint="00"
+            android:textSize="18sp"
+            android:background="@null" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:hint="00"
+            android:textSize="18sp"
+            android:background="@null" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:hint="00"
+            android:textSize="18sp"
+            android:background="@null" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:hint="00"
+            android:textSize="18sp"
+            android:background="@null" />
+
+
+    </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>
