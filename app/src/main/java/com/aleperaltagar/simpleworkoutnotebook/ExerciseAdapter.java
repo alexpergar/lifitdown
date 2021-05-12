@@ -50,7 +50,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
 
         // Load every unique exercise name in the database into an ArrayList and put them in an adapter for the exerciseName
         everyUniqueExercise = Utils.getUniqueItemsString(context);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, everyUniqueExercise);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, everyUniqueExercise);
         holder.exerciseName.setAdapter(adapter);
 
         // Name of the exercise
