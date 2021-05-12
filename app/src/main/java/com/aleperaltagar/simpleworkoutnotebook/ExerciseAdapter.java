@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -27,6 +29,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
     private ArrayList<Exercise> items = new ArrayList<>();
     private Context context;
     private boolean editable;
+    private ArrayList<String> everyUniqueExercise;
     private static final String TAG = "ExerciseAdapter";
 
     public ExerciseAdapter(Context context) {
@@ -44,6 +47,11 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Eliminate the textWatcher, as the placeholder changes item when recycled
         holder.exerciseName.removeTextChangedListener(holder.textWatcher);
+
+        // Load every unique exercise name in the database into an ArrayList and put them in an adapter for the exerciseName
+        everyUniqueExercise = Utils.getUniqueItemsString(context);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, everyUniqueExercise);
+        holder.exerciseName.setAdapter(adapter);
 
         // Name of the exercise
         holder.exerciseName.setText(items.get(position).getName());
@@ -133,7 +141,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private EditText exerciseName;
+        private AutoCompleteTextView exerciseName;
         private MaterialCardView parent;
         private RecyclerView setsRecView;
         private ImageView btnDeleteExercise;

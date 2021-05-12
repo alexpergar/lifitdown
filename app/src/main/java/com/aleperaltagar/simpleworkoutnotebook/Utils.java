@@ -14,29 +14,29 @@ public class Utils {
         return (ArrayList<Exercise>) ExercisesDatabase.getInstance(context).exerciseDao().getAllItems();
     }
 
-    public static ArrayList<Exercise> getUniqueItems(Context context)  {
-        ArrayList<Exercise> uniqueExercises = new ArrayList<>();
+    public static ArrayList<String> getUniqueItemsString(Context context)  {
+        ArrayList<String> uniqueExercises = new ArrayList<>();
         ArrayList<Exercise> exercises =  (ArrayList<Exercise>) ExercisesDatabase.getInstance(context).exerciseDao().getAllItems();
 
         // Look if it has been already added an exercise with the same name
         for (Exercise e : exercises) {
             boolean present = false;
-            for (Exercise ue : uniqueExercises) {
-                if (e.getName().equals(ue.getName())) {
+            for (String ue : uniqueExercises) {
+                if (e.getName().equals(ue)) {
                     present = true;
                     break;
                 }
             }
             if (!present) {
-                uniqueExercises.add(e);
+                uniqueExercises.add(e.getName());
             }
         }
 
         // Sort the exercises alphabetically
-        uniqueExercises.sort(new Comparator<Exercise>() {
+        uniqueExercises.sort(new Comparator<String>() {
             @Override
-            public int compare(Exercise o1, Exercise o2) {
-                return o1.getName().compareToIgnoreCase(o2.getName());
+            public int compare(String o1, String o2) {
+                return o1.compareToIgnoreCase(o2);
             }
         });
 

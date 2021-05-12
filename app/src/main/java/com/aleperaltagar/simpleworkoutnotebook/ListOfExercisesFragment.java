@@ -46,7 +46,7 @@ public class ListOfExercisesFragment extends Fragment {
         listOfExercisesRecView.setAdapter(listOfExercisesAdapter);
         listOfExercisesRecView.setLayoutManager((new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false)));
 
-        ArrayList<Exercise> exercises = Utils.getUniqueItems(getActivity());
+        ArrayList<String> exercises = Utils.getUniqueItemsString(getActivity());
         if (null != exercises) {
             listOfExercisesAdapter.setItems(exercises);
         }

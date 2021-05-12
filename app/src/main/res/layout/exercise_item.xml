@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="18dp">
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/exerciseName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,6 +24,7 @@
             android:textStyle="bold"
             android:hint="Name"
             android:background="@null"
+            android:dropDownWidth="match_parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

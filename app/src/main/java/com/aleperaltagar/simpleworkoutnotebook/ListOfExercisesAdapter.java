@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 public class ListOfExercisesAdapter extends RecyclerView.Adapter<ListOfExercisesAdapter.ViewHolder>{
 
-    private ArrayList<Exercise> items = new ArrayList<>();
+    private ArrayList<String> items = new ArrayList<>();
     private Context context;
 
     public ListOfExercisesAdapter(Context context) {
@@ -41,11 +41,11 @@ public class ListOfExercisesAdapter extends RecyclerView.Adapter<ListOfExercises
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.listOfExercisesName.setText(items.get(position).getName());
+        holder.listOfExercisesName.setText(items.get(position));
         holder.listOfExercisesName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment exerciseFragment = new ExerciseFragment(items.get(position).getName());
+                Fragment exerciseFragment = new ExerciseFragment(items.get(position));
                 FragmentTransaction transaction = ((FragmentActivity)context).getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.container , exerciseFragment);
                 transaction.addToBackStack(null);
@@ -60,7 +60,7 @@ public class ListOfExercisesAdapter extends RecyclerView.Adapter<ListOfExercises
         return items.size();
     }
 
-    public void setItems(ArrayList<Exercise> items) {
+    public void setItems(ArrayList<String> items) {
         this.items = items;
         notifyDataSetChanged();
     }
