@@ -40,28 +40,61 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        // Eliminate the textWatcher, as the placeholder changes item when recycled
+        holder.txtWeight.removeTextChangedListener(holder.textWatcherWeight);
+        holder.txtReps.removeTextChangedListener(holder.textWatcherReps);
+
         // Set the data for the sets
         holder.txtWeight.setText(items.get(position).getWeight());
         holder.txtReps.setText(items.get(position).getReps());
 
         // If focus lost, save the data that was written on the EditText
-        holder.txtWeight.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//        holder.txtWeight.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (!hasFocus) {
+//                    items.get(position).setWeight(holder.txtWeight.getText().toString());
+//                    Utils.updateSets(context, exerciseId, items);
+//                }
+//            }
+//        });
+//
+//        holder.txtReps.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (!hasFocus) {
+//                    items.get(position).setReps(holder.txtReps.getText().toString());
+//                    Utils.updateSets(context, exerciseId, items);
+//                }
+//            }
+//        });
+
+        // Text changed listeners for fields in the sets
+        holder.txtWeight.addTextChangedListener(holder.textWatcherWeight = new TextWatcher() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    items.get(position).setWeight(holder.txtWeight.getText().toString());
-                    Utils.updateSets(context, exerciseId, items);
-                }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                items.get(position).setWeight(holder.txtWeight.getText().toString());
+                Utils.updateSets(context, exerciseId, items);
             }
         });
 
-        holder.txtReps.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        holder.txtReps.addTextChangedListener(holder.textWatcherReps = new TextWatcher() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    items.get(position).setReps(holder.txtReps.getText().toString());
-                    Utils.updateSets(context, exerciseId, items);
-                }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                items.get(position).setReps(holder.txtReps.getText().toString());
+                Utils.updateSets(context, exerciseId, items);
             }
         });
 
@@ -110,6 +143,8 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
         private EditText txtWeight;
         private EditText txtReps;
         private MaterialCardView parent;
+        private TextWatcher textWatcherWeight = null;
+        private TextWatcher textWatcherReps = null;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

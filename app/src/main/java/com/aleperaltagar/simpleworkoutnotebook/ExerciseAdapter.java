@@ -87,8 +87,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
             public void afterTextChanged(Editable s) {
                 Utils.updateExerciseName(context, items.get(position).getId(), holder.exerciseName.getText().toString());
                 items.get(position).setName(holder.exerciseName.getText().toString());
-                Log.d(TAG, "afterTextChanged: " + Utils.getAllItems(context));
-                Log.d(TAG, "afterTextChanged: position" + position);
             }
         });
 
