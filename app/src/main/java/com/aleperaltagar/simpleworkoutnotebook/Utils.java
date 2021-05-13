@@ -1,6 +1,8 @@
 package com.aleperaltagar.simpleworkoutnotebook;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.aleperaltagar.simpleworkoutnotebook.DatabaseFiles.ExercisesDatabase;
 import com.google.gson.Gson;
 import java.util.ArrayList;
@@ -73,6 +75,19 @@ public class Utils {
     public static Exercise getLastItem(Context context) {
         return ExercisesDatabase.getInstance(context).exerciseDao().getLastItem();
     }
+
+    public static void initiateSharedPreferences(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("prefs",0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        if (sharedPreferences.getBoolean("initiated", false) == false ) {
+            editor.putBoolean("checkWeight", true);
+            editor.putBoolean("checkReps", true);
+            editor.putString("weightUnit", "kg");
+            editor.putBoolean("initiated", true);
+            editor.commit();
+        }
+    }
+
 
     public static int getSetID() {
         ID_SET++;

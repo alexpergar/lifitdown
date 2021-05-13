@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Keep track of:"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <GridLayout
+                android:id="@+id/gridLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/TextView">
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/checkWeight"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:text="Weight" />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/checkReps"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:text="Repetitions" />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/checkRestingTime"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:text="Resting time" />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/checkExecutionTime"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:text="Execution time" />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/checkFailure"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:text="Failure" />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/checkRIR"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:text="RIR" />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/checkTargetReps"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:text="Target reps" />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/checkMood"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:text="Mood" />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/checkComment"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:text="Comment" />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/checkNote"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:text="Note" />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/checkPersonal1"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:text="Personalized 1" />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/checkPersonal2"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:text="Personalized 2" />
+
+            </GridLayout>
+
+            <TextView
+                android:id="@+id/TextView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Weight unit:"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/gridLayout" />
+
+            <RadioGroup
+                android:id="@+id/rgWeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/TextView2"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <RadioButton
+                    android:id="@+id/rbKg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="Kilograms (kg)"/>
+
+                <RadioButton
+                    android:id="@+id/rbLb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="Pounds (lb)"/>
+
+            </RadioGroup>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Utils.initiateSharedPreferences(this);
+
         initViews();
 
         // Fragment manager
@@ -59,14 +61,19 @@ public class MainActivity extends AppCompatActivity {
                         listOfExercisesTransaction.addToBackStack(null);
                         listOfExercisesTransaction.commit();
                         break;
+                    case R.id.settings:
+                        Fragment settingsFragment = new SettingsFragment();
+                        FragmentTransaction settingsTransaction = getSupportFragmentManager().beginTransaction();
+                        settingsTransaction.replace(R.id.container , settingsFragment);
+                        settingsTransaction.addToBackStack(null);
+                        settingsTransaction.commit();
+                        break;
                     default:
                         break;
                 }
                 return false;
             }
         });
-
-
 
     }
 
