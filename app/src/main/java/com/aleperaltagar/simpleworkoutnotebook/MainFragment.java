@@ -104,7 +104,6 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
         btnAddExercise = view.findViewById(R.id.btnAddExercise);
         textToolbar = getActivity().findViewById(R.id.textToolbar);
         editButtonToolbar = getActivity().findViewById(R.id.editButtonToolbar);
-        context = this;
     }
 
     // Function to reset all data related to day (toolbar, recyclerview)
