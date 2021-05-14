@@ -3,6 +3,7 @@ package com.aleperaltagar.simpleworkoutnotebook;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.media.Image;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -48,43 +50,14 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Eliminate the textWatcher, as the placeholder changes item when recycled
-        holder.txtWeight.removeTextChangedListener(holder.textWatcherWeight);
-        holder.txtReps.removeTextChangedListener(holder.textWatcherReps);
+
 
         // Show only desired fields
-        hideNotUsedFields(holder, sharedPreferences);
+        hideNotUsedFields(holder, position, sharedPreferences);
         
         // Set the data for the sets
-        holder.txtWeight.setText(items.get(position).getWeight());
-        holder.txtReps.setText(items.get(position).getReps());
 
         // Text changed listeners for fields in the sets
-        holder.txtWeight.addTextChangedListener(holder.textWatcherWeight = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                items.get(position).setWeight(holder.txtWeight.getText().toString());
-                Utils.updateSets(context, exerciseId, items);
-            }
-        });
-        holder.txtReps.addTextChangedListener(holder.textWatcherReps = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                items.get(position).setReps(holder.txtReps.getText().toString());
-                Utils.updateSets(context, exerciseId, items);
-            }
-        });
 
         // If parent ExerciseAdapter is in editmode, put yourself in edit mode as well
         if (editable) {
@@ -105,58 +78,245 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
         }
     }
 
-    private void hideNotUsedFields(ViewHolder holder, SharedPreferences sharedPreferences) {
+    private void hideNotUsedFields(ViewHolder holder, int position, SharedPreferences sharedPreferences) {
         if (!sharedPreferences.getBoolean("checkWeight", false)) {
             holder.txtWeight.setVisibility(View.GONE);
             holder.txtIconWeight.setVisibility(View.GONE);
         } else {
-            if (sharedPreferences.getString("weightUnit", null).equals("kg")) {
+            if (sharedPreferences.getString("weightUnit", "kg").equals("kg")) {
                 holder.txtIconWeight.setText("kg");
             } else {
                 holder.txtIconWeight.setText("lb");
             }
+            holder.txtWeight.removeTextChangedListener(holder.textWatcherWeight);
+            holder.txtWeight.setText(items.get(position).getWeight());
+            holder.txtWeight.addTextChangedListener(holder.textWatcherWeight = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+                @Override
+                public void afterTextChanged(Editable s) {
+                    items.get(position).setWeight(holder.txtWeight.getText().toString());
+                    Utils.updateSets(context, exerciseId, items);
+                }
+            });
         }
+
         if (!sharedPreferences.getBoolean("checkReps", false)) {
             holder.txtReps.setVisibility(View.GONE);
             holder.txtIconReps.setVisibility(View.GONE);
+        } else {
+            holder.txtReps.removeTextChangedListener(holder.textWatcherReps);
+            holder.txtReps.setText(items.get(position).getReps());
+            holder.txtReps.addTextChangedListener(holder.textWatcherReps = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+                @Override
+                public void afterTextChanged(Editable s) {
+                    items.get(position).setReps(holder.txtReps.getText().toString());
+                    Utils.updateSets(context, exerciseId, items);
+                }
+            });
         }
+
         if (!sharedPreferences.getBoolean("checkRestingTime", false)) {
             holder.txtRestingTime.setVisibility(View.GONE);
             holder.imageRestingTime.setVisibility(View.GONE);
+        } else {
+            holder.txtRestingTime.removeTextChangedListener(holder.textWatcherRestingTime);
+            holder.txtRestingTime.setText(items.get(position).getRestingTime());
+            holder.txtRestingTime.addTextChangedListener(holder.textWatcherRestingTime = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+                @Override
+                public void afterTextChanged(Editable s) {
+                    items.get(position).setRestingTime(holder.txtRestingTime.getText().toString());
+                    Utils.updateSets(context, exerciseId, items);
+                }
+            });
         }
+
         if (!sharedPreferences.getBoolean("checkExecutionTime", false)) {
             holder.txtWorkingTime.setVisibility(View.GONE);
             holder.imageWorkingTime.setVisibility(View.GONE);
+        } else {
+            holder.txtWorkingTime.removeTextChangedListener(holder.textWatcherWorkingTime);
+            holder.txtWorkingTime.setText(items.get(position).getExecutionTime());
+            holder.txtWorkingTime.addTextChangedListener(holder.textWatcherWorkingTime = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+                @Override
+                public void afterTextChanged(Editable s) {
+                    items.get(position).setExecutionTime(holder.txtWorkingTime.getText().toString());
+                    Utils.updateSets(context, exerciseId, items);
+                }
+            });
         }
+
         if (!sharedPreferences.getBoolean("checkFailure", false)) {
             holder.checkboxFailure.setVisibility(View.GONE);
             holder.imageFailure.setVisibility(View.GONE);
+        } else {
+            holder.checkboxFailure.setChecked(items.get(position).isFailure());
+            holder.checkboxFailure.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    items.get(position).setFailure(isChecked);
+                    Utils.updateSets(context, exerciseId,items);
+                }
+            });
         }
+
         if (!sharedPreferences.getBoolean("checkRIR", false)) {
             holder.txtRIR.setVisibility(View.GONE);
             holder.txtIconRIR.setVisibility(View.GONE);
+        } else {
+            holder.txtRIR.removeTextChangedListener(holder.textWatcherRIR);
+            holder.txtRIR.setText(items.get(position).getRIR());
+            holder.txtRIR.addTextChangedListener(holder.textWatcherRIR = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+                @Override
+                public void afterTextChanged(Editable s) {
+                    items.get(position).setRIR(holder.txtRIR.getText().toString());
+                    Utils.updateSets(context, exerciseId, items);
+                }
+            });
         }
+
         if (!sharedPreferences.getBoolean("checkTargetReps", false)) {
             holder.txtTargetReps.setVisibility(View.GONE);
             holder.imageTargetReps.setVisibility(View.GONE);
+        } else {
+            holder.txtTargetReps.removeTextChangedListener(holder.textWatcherTargetReps);
+            holder.txtTargetReps.setText(items.get(position).getTargetReps());
+            holder.txtTargetReps.addTextChangedListener(holder.textWatcherTargetReps = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+                @Override
+                public void afterTextChanged(Editable s) {
+                    items.get(position).setTargetReps(holder.txtTargetReps.getText().toString());
+                    Utils.updateSets(context, exerciseId, items);
+                }
+            });
         }
+
+        // TODO: 5/14/21 spinner with images
         if (!sharedPreferences.getBoolean("checkMood", false)) {
             holder.spinnerMood.setVisibility(View.GONE);
         }
+
         if (!sharedPreferences.getBoolean("checkComment", false)) {
             holder.txtComment.setVisibility(View.GONE);
             holder.imageComment.setVisibility(View.GONE);
+        } else {
+            holder.txtComment.removeTextChangedListener(holder.textWatcherComment);
+            holder.txtComment.setText(items.get(position).getComment());
+            holder.txtComment.addTextChangedListener(holder.textWatcherComment = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+                @Override
+                public void afterTextChanged(Editable s) {
+                    items.get(position).setComment(holder.txtComment.getText().toString());
+                    Utils.updateSets(context, exerciseId, items);
+                }
+            });
         }
+
+        // TODO: 5/14/21 click to open an editor fragment
         if (!sharedPreferences.getBoolean("checkNote", false)) {
             holder.imageNote.setVisibility(View.GONE);
+        } else {
+            if (!items.get(position).getNote().equals("")) {
+                holder.imageNote.setImageResource(R.drawable.ic_note_full);
+                holder.imageNote.setColorFilter(Color.BLACK);
+                holder.imageNote.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
+
         if (!sharedPreferences.getBoolean("checkPersonal1", false)) {
             holder.txtPersonal1.setVisibility(View.GONE);
             holder.txtIconPersonal1.setVisibility(View.GONE);
+        } else {
+            holder.txtPersonal1.removeTextChangedListener(holder.textWatcherPersonal1);
+            holder.txtPersonal1.setText(items.get(position).getPersonal1());
+            holder.txtPersonal1.addTextChangedListener(holder.textWatcherPersonal1 = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+                @Override
+                public void afterTextChanged(Editable s) {
+                    items.get(position).setPersonal1(holder.txtPersonal1.getText().toString());
+                    Utils.updateSets(context, exerciseId, items);
+                }
+            });
         }
+
         if (!sharedPreferences.getBoolean("checkPersonal2", false)) {
             holder.txtPersonal2.setVisibility(View.GONE);
             holder.txtIconPersonal2.setVisibility(View.GONE);
+        } else {
+            holder.txtPersonal2.removeTextChangedListener(holder.textWatcherPersonal2);
+            holder.txtPersonal2.setText(items.get(position).getPersonal2());
+            holder.txtPersonal2.addTextChangedListener(holder.textWatcherPersonal2 = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+                @Override
+                public void afterTextChanged(Editable s) {
+                    items.get(position).setPersonal2(holder.txtPersonal2.getText().toString());
+                    Utils.updateSets(context, exerciseId, items);
+                }
+            });
         }
     }
 
@@ -189,7 +349,8 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
         private EditText txtWeight, txtReps, txtWorkingTime, txtRestingTime, txtRIR, txtTargetReps,
             txtComment, txtPersonal1, txtPersonal2;
         private TextView txtIconWeight, txtIconReps, txtIconRIR, txtIconPersonal1, txtIconPersonal2;
-        private TextWatcher textWatcherWeight = null, textWatcherReps = null;
+        private TextWatcher textWatcherWeight, textWatcherReps, textWatcherWorkingTime, textWatcherRestingTime,
+            textWatcherRIR, textWatcherTargetReps, textWatcherComment, textWatcherPersonal1, textWatcherPersonal2;
         private ImageView btnDeleteSet, imageWorkingTime, imageRestingTime, imageFailure, imageTargetReps,
             imageComment, imageNote;
         private Spinner spinnerMood;
