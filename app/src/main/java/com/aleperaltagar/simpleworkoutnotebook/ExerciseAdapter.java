@@ -69,7 +69,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         });
 
         // Setting the sets recyclerview
-        SetAdapter setsAdapter = new SetAdapter(context, items.get(position).getId());
+        SetAdapter setsAdapter = new SetAdapter(context, items.get(position).getId(), false);
         setsAdapter.setItems(items.get(position).getSets());
         holder.setsRecView.setAdapter(setsAdapter);
         holder.setsRecView.setLayoutManager((new LinearLayoutManager(context, RecyclerView.VERTICAL, false)));

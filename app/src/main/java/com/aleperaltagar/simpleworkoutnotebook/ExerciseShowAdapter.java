@@ -43,7 +43,7 @@ public class ExerciseShowAdapter extends RecyclerView.Adapter<ExerciseShowAdapte
         holder.date.setText(dateString);
 
         // Setting the sets recyclerview
-        SetAdapter setsAdapter = new SetAdapter(context, items.get(position).getId());
+        SetAdapter setsAdapter = new SetAdapter(context, items.get(position).getId(), true);
         setsAdapter.setItems(items.get(position).getSets());
         holder.setsRecView.setAdapter(setsAdapter);
         holder.setsRecView.setLayoutManager((new LinearLayoutManager(context, RecyclerView.VERTICAL, false)));

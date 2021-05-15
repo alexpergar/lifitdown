@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.aleperaltagar.simpleworkoutnotebook.DatabaseFiles.ExercisesDatabase;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        ExercisesDatabase.getInstance(this).exerciseDao().nukeTable();
 
         Utils.initiateSharedPreferences(this);
 

@@ -29,8 +29,9 @@ public abstract class ExercisesDatabase extends RoomDatabase {
             instance = Room.databaseBuilder(context, ExercisesDatabase.class, "exercises_database")
                     .fallbackToDestructiveMigration() // remember to delete this
                     .allowMainThreadQueries()
-                    .addCallback(initialCallback)
                     .build();
+//                    .addCallback(initialCallback)
+
         }
         return instance;
     }
