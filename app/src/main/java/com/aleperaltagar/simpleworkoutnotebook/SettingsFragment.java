@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ public class SettingsFragment extends Fragment {
     checkRIR, checkTargetReps, checkMood, checkComment, checkNote, checkPersonal1, checkPersonal2;
     private TextView textToolbar;
     private RadioButton rbKg, rbLb;
+    private ImageView editButtonToolbar;
 
     @Nullable
     @Override
@@ -35,6 +37,7 @@ public class SettingsFragment extends Fragment {
         // Change toolbar text and disable click listener
         textToolbar.setOnClickListener(null);
         textToolbar.setText("Settings");
+        editButtonToolbar.setVisibility(View.GONE);
 
         // Set preferences as they were saved
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("prefs",0);
@@ -169,6 +172,7 @@ public class SettingsFragment extends Fragment {
     }
 
     private void initViews(View view) {
+        editButtonToolbar = getActivity().findViewById(R.id.editButtonToolbar);
         textToolbar = getActivity().findViewById(R.id.textToolbar);
         checkWeight = view.findViewById(R.id.checkWeight);
         checkReps = view.findViewById(R.id.checkReps);

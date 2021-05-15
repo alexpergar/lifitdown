@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,7 @@ public class ExerciseFragment extends Fragment {
     private RecyclerView exercisesRecView;
     private ExerciseShowAdapter exercisesAdapter;
     private TextView textToolbar;
+    private ImageView editButtonToolbar;
 
     public ExerciseFragment(String exerciseName) {
         this.exerciseName = exerciseName;
@@ -39,6 +41,7 @@ public class ExerciseFragment extends Fragment {
         // Change toolbar text and disable click listener
         textToolbar.setOnClickListener(null);
         textToolbar.setText(exerciseName);
+        editButtonToolbar.setVisibility(View.GONE);
 
         return view;
     }
@@ -46,6 +49,7 @@ public class ExerciseFragment extends Fragment {
     private void initViews(View view) {
         exercisesRecView  = view.findViewById(R.id.exerciseFragmentRecview);
         textToolbar = getActivity().findViewById(R.id.textToolbar);
+        editButtonToolbar = getActivity().findViewById(R.id.editButtonToolbar);
     }
 
     private void initRecViews(String name) {

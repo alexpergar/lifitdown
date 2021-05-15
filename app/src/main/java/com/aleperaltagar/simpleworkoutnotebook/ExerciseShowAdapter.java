@@ -41,6 +41,7 @@ public class ExerciseShowAdapter extends RecyclerView.Adapter<ExerciseShowAdapte
         // Setting the date
         String dateString = DateFormat.getDateInstance().format(items.get(position).getCalendar().getTime());
         holder.date.setText(dateString);
+//        holder.date.setOnClickListener();
 
         // Setting the sets recyclerview
         SetAdapter setsAdapter = new SetAdapter(context, items.get(position).getId(), true);

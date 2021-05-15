@@ -60,6 +60,23 @@
             android:background="@null" />
 
         <EditText
+            android:id="@+id/txtTargetReps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:hint="___"
+            android:textSize="18sp"
+            android:background="@null" />
+
+        <ImageView
+            android:id="@+id/imageTargetReps"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_target"
+            android:layout_marginStart="5dp"
+            app:tint="#C3C3C3"/>
+
+        <EditText
             android:id="@+id/txtWorkingTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -123,23 +140,6 @@
             android:text="RIR"
             android:textColor="#C3C3C3"
             android:layout_marginStart="5dp" />
-
-        <EditText
-            android:id="@+id/txtTargetReps"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:hint="___"
-            android:textSize="18sp"
-            android:background="@null" />
-
-        <ImageView
-            android:id="@+id/imageTargetReps"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_target"
-            android:layout_marginStart="5dp"
-            app:tint="#C3C3C3"/>
 
         <Spinner
             android:id="@+id/spinnerMood"
