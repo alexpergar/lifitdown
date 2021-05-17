@@ -38,18 +38,15 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
     private Calendar currentDay;
     private boolean editMode = false;
 
+    public MainFragment(Calendar currentDay) {
+        this.currentDay = currentDay;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate layout
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-
-        // Set today's date
-        currentDay = Calendar.getInstance();
-        currentDay.set(Calendar.HOUR_OF_DAY, 0);
-        currentDay.set(Calendar.MINUTE, 0);
-        currentDay.set(Calendar.SECOND, 0);
-        currentDay.set(Calendar.MILLISECOND, 0);
 
         // Initialize views for today
         initViews(view);

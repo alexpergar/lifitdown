@@ -16,6 +16,8 @@ import com.aleperaltagar.simpleworkoutnotebook.DatabaseFiles.ExercisesDatabase;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawer;
@@ -32,8 +34,15 @@ public class MainActivity extends AppCompatActivity {
 
         initViews();
 
+        // Set today's date
+        Calendar currentDay = Calendar.getInstance();
+        currentDay.set(Calendar.HOUR_OF_DAY, 0);
+        currentDay.set(Calendar.MINUTE, 0);
+        currentDay.set(Calendar.SECOND, 0);
+        currentDay.set(Calendar.MILLISECOND, 0);
+
         // Fragment manager
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, new MainFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, new MainFragment(currentDay)).commit();
 
         // Navigation drawer
         setSupportActionBar(toolbar);
@@ -50,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()) {
                     case R.id.notebook:
-                        Fragment notebookFragment = new MainFragment();
+                        Fragment notebookFragment = new MainFragment(currentDay);
                         FragmentTransaction notebookTransaction = getSupportFragmentManager().beginTransaction();
                         notebookTransaction.replace(R.id.container , notebookFragment);
                         notebookTransaction.addToBackStack(null);

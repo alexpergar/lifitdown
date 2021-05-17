@@ -11,6 +11,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,7 +44,16 @@ public class ExerciseShowAdapter extends RecyclerView.Adapter<ExerciseShowAdapte
         // Setting the date
         String dateString = DateFormat.getDateInstance().format(items.get(position).getCalendar().getTime());
         holder.date.setText(dateString);
-//        holder.date.setOnClickListener();
+        holder.date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment mainFragment = new MainFragment(items.get(position).getCalendar());
+                FragmentTransaction transaction = ((FragmentActivity)context).getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.container , mainFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
 
         // Setting the sets recyclerview
         SetAdapter setsAdapter = new SetAdapter(context, items.get(position).getId(), true);
