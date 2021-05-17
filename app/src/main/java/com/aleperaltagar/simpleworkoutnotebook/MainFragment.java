@@ -79,6 +79,11 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
             @Override
             public void onClick(View v) {
                 editMode = !editMode;
+                if (editMode) {
+                    editButtonToolbar.setImageResource(R.drawable.ic_check);
+                } else {
+                    editButtonToolbar.setImageResource(R.drawable.ic_edit);
+                }
                 exercisesAdapter.switchEditMode(editMode);
             }
         });
@@ -107,6 +112,7 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
         loadingSpinner.setVisibility(View.VISIBLE);
         btnAddExercise.setVisibility(View.GONE);
 
+        // Get the data from the database from a service thread
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
         executorService.submit(new Runnable() {
@@ -140,6 +146,7 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
         // Change the text of the toolbar to the date
         String dateString = DateFormat.getDateInstance().format(day.getTime());
         textToolbar.setText(dateString);
+        editButtonToolbar.setImageResource(R.drawable.ic_edit);
     }
 
     // This triggers when a day is chosen
