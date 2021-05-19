@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
                     default:
                         break;
                 }
+                drawer.closeDrawers();
                 return false;
             }
         });

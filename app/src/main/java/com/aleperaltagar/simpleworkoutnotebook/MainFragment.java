@@ -133,12 +133,15 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
             @Override
             public void run() {
                 exercises = Utils.getItemsByDate(getActivity(), day);
+                SystemClock.sleep(300); // sleep 0.3s to let the drawer close (not a very good solution)
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
                         loadingSpinner.setVisibility(View.GONE);
                         btnAddExercise.setVisibility(View.VISIBLE);
-                        exercisesAdapter.setItems(exercises);
+                        if (null != exercises) {
+                            exercisesAdapter.setItems(exercises);
+                        }
                     }
                 });
             }

@@ -42,6 +42,10 @@ public class Utils {
             }
         });
 
+        if (uniqueExercises.get(0).equals("")) {
+            uniqueExercises.remove(0);
+        }
+
         return uniqueExercises;
     }
 

@@ -98,6 +98,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
             }
         });
 
+        // Button to delete the exercise
         holder.btnDeleteExercise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,8 +119,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
     }
 
     public void switchEditMode(boolean editMode) {
-        this.
-        editable = editMode;
+        this.editable = editMode;
         notifyDataSetChanged();
     }
 
