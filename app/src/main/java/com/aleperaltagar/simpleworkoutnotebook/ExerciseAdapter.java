@@ -118,6 +118,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
     }
 
     public void switchEditMode(boolean editMode) {
+        this.
         editable = editMode;
         notifyDataSetChanged();
     }
@@ -157,7 +158,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
             btnDeleteExercise = itemView.findViewById(R.id.btnDeleteExercise);
             btnAddSet = itemView.findViewById(R.id.btnAddSet);
             btnPreviousMarks = itemView.findViewById(R.id.buttonPreviousMarks);
-
         }
     }
 }

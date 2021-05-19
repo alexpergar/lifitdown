@@ -49,6 +49,7 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
     private ProgressBar loadingSpinner;
     private boolean editMode = false;
     private ArrayList<Exercise> exercises;
+    private View thisView;
 
     public MainFragment(Calendar currentDay) {
         this.currentDay = currentDay;
@@ -57,11 +58,13 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inflate layout
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        // Initialize views for today
-        initViews(view);
+        // Initialize the toolbar
+        textToolbar = getActivity().findViewById(R.id.textToolbar);
+        editButtonToolbar = getActivity().findViewById(R.id.editButtonToolbar);
+        String dateString = DateFormat.getDateInstance().format(currentDay.getTime());
+        textToolbar.setText(dateString);
+        editButtonToolbar.setImageResource(R.drawable.ic_edit);
 
         // Toolbar date picker on date click
         textToolbar.setOnClickListener(new View.OnClickListener() {
@@ -88,19 +91,30 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
             }
         });
 
-        // Add new exercise button
-        btnAddExercise.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Exercise newExercise = new Exercise(currentDay);
-                exercisesAdapter.addNewExercise(newExercise);
-            }
-        });
+        // If the view exists (because it was backstacked), load it
+        if (thisView == null) {
+            // Inflate layout
+            View view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        // Set everything for the current date
-        setWorkoutDay(currentDay);
+            // Initialize views for today
+            initViews(view);
 
-        return view;
+            // Add new exercise button
+            btnAddExercise.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Exercise newExercise = new Exercise(currentDay);
+                    exercisesAdapter.addNewExercise(newExercise);
+                }
+            });
+
+            // Set everything for the current date
+            setWorkoutDay(currentDay);
+
+            // Save the view to recover it
+            thisView = view;
+        }
+        return thisView;
     }
 
     private void initRecViews(Calendar day) {
@@ -134,8 +148,6 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
     private void initViews(View view) {
         exercisesRecView = view.findViewById(R.id.exercisesRecView);
         btnAddExercise = view.findViewById(R.id.btnAddExercise);
-        textToolbar = getActivity().findViewById(R.id.textToolbar);
-        editButtonToolbar = getActivity().findViewById(R.id.editButtonToolbar);
         loadingSpinner = view.findViewById(R.id.loading_spinner);
     }
 
