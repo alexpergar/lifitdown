@@ -19,6 +19,13 @@
             android:elevation="4dp"
             android:background="@color/teal_700">
 
+            <ProgressBar
+                android:id="@+id/toolbarLoadingSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:visibility="gone"
+                android:indeterminateTintMode="src_atop" />
 
             <TextView
                 android:id="@+id/textToolbar"

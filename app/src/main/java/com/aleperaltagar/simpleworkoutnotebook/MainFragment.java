@@ -46,7 +46,7 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
     private ImageView editButtonToolbar;
     private Fragment context = this;
     private Calendar currentDay;
-    private ProgressBar loadingSpinner;
+    private ProgressBar loadingSpinner, toolbarLoadingSpinner;
     private boolean editMode = false;
     private ArrayList<Exercise> exercises;
     private View thisView;
@@ -62,6 +62,7 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
         // Initialize the toolbar
         textToolbar = getActivity().findViewById(R.id.textToolbar);
         editButtonToolbar = getActivity().findViewById(R.id.editButtonToolbar);
+        ProgressBar toolbarLoadingSpinner = getActivity().findViewById(R.id.toolbarLoadingSpinner);
         String dateString = DateFormat.getDateInstance().format(currentDay.getTime());
         textToolbar.setText(dateString);
         editButtonToolbar.setImageResource(R.drawable.ic_edit);
@@ -82,12 +83,22 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
             @Override
             public void onClick(View v) {
                 editMode = !editMode;
+                editButtonToolbar.setVisibility(View.GONE);
+                toolbarLoadingSpinner.setVisibility(View.VISIBLE);
                 if (editMode) {
                     editButtonToolbar.setImageResource(R.drawable.ic_check);
                 } else {
                     editButtonToolbar.setImageResource(R.drawable.ic_edit);
                 }
-                exercisesAdapter.switchEditMode(editMode);
+                // Do the action after setting the loading spinner rolling
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        exercisesAdapter.switchEditMode(editMode);
+                        editButtonToolbar.setVisibility(View.VISIBLE);
+                        toolbarLoadingSpinner.setVisibility(View.GONE);
+                    }
+                }, 0);
             }
         });
 
