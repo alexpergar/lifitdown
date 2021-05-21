@@ -1,5 +1,7 @@
 package com.aleperaltagar.simpleworkoutnotebook;
 
+import android.content.Context;
+
 public class Set {
 
     private int id;
@@ -11,14 +13,14 @@ public class Set {
     private boolean failure;
     private String RIR;
     private String targetReps;
-    private int mood;
+    private String mood;
     private String comment;
     private String note;
     private String personal1;
     private String personal2;
 
-    public Set(int exerciseId) {
-        this.id = Utils.getSetID();;
+    public Set(Context context, int exerciseId) {
+        this.id = Utils.getSetID(context);
         this.exerciseId = exerciseId;
         this.reps = "";
         this.weight = "";
@@ -27,7 +29,7 @@ public class Set {
         this.failure = false;
         this.RIR = "";
         this.targetReps = "";
-        this.mood = 3;
+        this.mood = "";
         this.comment = "";
         this.note = "";
         this.personal1 = "";
@@ -102,11 +104,11 @@ public class Set {
         this.targetReps = targetReps;
     }
 
-    public int getMood() {
+    public String getMood() {
         return mood;
     }
 
-    public void setMood(int mood) {
+    public void setMood(String mood) {
         this.mood = mood;
     }
 

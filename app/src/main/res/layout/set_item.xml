@@ -141,13 +141,22 @@
             android:textColor="#C3C3C3"
             android:layout_marginStart="5dp" />
 
-        <Spinner
-            android:id="@+id/spinnerMood"
+        <EditText
+            android:id="@+id/txtMood"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
             android:hint="___"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:background="@null" />
+
+        <ImageView
+            android:id="@+id/imageMood"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_face"
+            android:layout_marginStart="5dp"
+            app:tint="#C3C3C3"/>
 
         <EditText
             android:id="@+id/txtComment"

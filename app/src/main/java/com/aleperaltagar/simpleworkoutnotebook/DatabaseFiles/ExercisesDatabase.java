@@ -56,46 +56,46 @@ public abstract class ExercisesDatabase extends RoomDatabase {
 
         @Override
         public void run() {
-            ArrayList<Exercise> allItems = new ArrayList<>();
-
-            Exercise benchPress = new Exercise(Calendar.getInstance());
-            Set set1bench = new Set(1);
-            Set set2bench = new Set(1);
-            Set set3bench = new Set(1);
-            set1bench.setReps("10");
-            set1bench.setWeight("20");
-            set2bench.setReps("20");
-            set2bench.setWeight("30");
-            set3bench.setReps("30");
-            set3bench.setWeight("40");
-            ArrayList<Set> benchSets = new ArrayList<>();
-            benchSets.add(set1bench);
-            benchSets.add(set2bench);
-            benchSets.add(set3bench);
-            benchPress.setSets(benchSets);
-            allItems.add(benchPress);
-
-
-            Exercise pullUp = new Exercise(Calendar.getInstance());
-            Set set1pullUp = new Set(2);
-            Set set2pullUp = new Set(2);
-            Set set3pullUp = new Set(2);
-            set1pullUp.setReps("100");
-            set1pullUp.setWeight("200");
-            set2pullUp.setReps("200");
-            set2pullUp.setWeight("300");
-            set3pullUp.setReps("300");
-            set3pullUp.setWeight("400");
-            ArrayList<Set> pullUpSets = new ArrayList<>();
-            pullUpSets.add(set1pullUp);
-            pullUpSets.add(set2pullUp);
-            pullUpSets.add(set3pullUp);
-            pullUp.setSets(pullUpSets);
-            allItems.add(pullUp);
-
-            for (Exercise e : allItems) {
-                exerciseDao.insert(e);
-            }
+//            ArrayList<Exercise> allItems = new ArrayList<>();
+//
+//            Exercise benchPress = new Exercise(Calendar.getInstance());
+//            Set set1bench = new Set(1);
+//            Set set2bench = new Set(1);
+//            Set set3bench = new Set(1);
+//            set1bench.setReps("10");
+//            set1bench.setWeight("20");
+//            set2bench.setReps("20");
+//            set2bench.setWeight("30");
+//            set3bench.setReps("30");
+//            set3bench.setWeight("40");
+//            ArrayList<Set> benchSets = new ArrayList<>();
+//            benchSets.add(set1bench);
+//            benchSets.add(set2bench);
+//            benchSets.add(set3bench);
+//            benchPress.setSets(benchSets);
+//            allItems.add(benchPress);
+//
+//
+//            Exercise pullUp = new Exercise(Calendar.getInstance());
+//            Set set1pullUp = new Set(2);
+//            Set set2pullUp = new Set(2);
+//            Set set3pullUp = new Set(2);
+//            set1pullUp.setReps("100");
+//            set1pullUp.setWeight("200");
+//            set2pullUp.setReps("200");
+//            set2pullUp.setWeight("300");
+//            set3pullUp.setReps("300");
+//            set3pullUp.setWeight("400");
+//            ArrayList<Set> pullUpSets = new ArrayList<>();
+//            pullUpSets.add(set1pullUp);
+//            pullUpSets.add(set2pullUp);
+//            pullUpSets.add(set3pullUp);
+//            pullUp.setSets(pullUpSets);
+//            allItems.add(pullUp);
+//
+//            for (Exercise e : allItems) {
+//                exerciseDao.insert(e);
+//            }
         }
     }
 

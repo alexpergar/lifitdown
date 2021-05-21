@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.Image;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -20,6 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
@@ -266,9 +270,32 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
             }
         }
 
-        // TODO: 5/14/21 spinner with images
         if (!sharedPreferences.getBoolean("checkMood", false)) {
-            holder.spinnerMood.setVisibility(View.GONE);
+            holder.txtMood.setVisibility(View.GONE);
+            holder.imageMood.setVisibility(View.GONE);
+        } else {
+            holder.txtMood.setText(items.get(position).getMood());
+            if (onlyShow) {
+                holder.txtMood.setFocusable(false);
+                holder.txtMood.setFocusableInTouchMode(false);
+            } else {
+                holder.txtMood.removeTextChangedListener(holder.textWatcherMood);
+                holder.txtMood.addTextChangedListener(holder.textWatcherMood = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    }
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        items.get(position).setMood(holder.txtMood.getText().toString());
+                        Utils.updateSets(context, exerciseId, items);
+                    }
+                });
+            }
         }
 
         if (!sharedPreferences.getBoolean("checkComment", false)) {
@@ -306,13 +333,22 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
             if (!items.get(position).getNote().equals("")) {
                 holder.imageNote.setImageResource(R.drawable.ic_note_full);
                 holder.imageNote.setColorFilter(Color.BLACK);
-                holder.imageNote.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
-                    }
-                });
             }
+            holder.imageNote.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("exerciseId", exerciseId);
+                    bundle.putInt("setId", items.get(position).getId());
+                    bundle.putString("noteText", items.get(position).getNote());
+                    Fragment noteFragment = new NoteFragment();
+                    noteFragment.setArguments(bundle);
+                    FragmentTransaction noteTransaction = ((FragmentActivity)context).getSupportFragmentManager().beginTransaction();
+                    noteTransaction.replace(R.id.container , noteFragment);
+                    noteTransaction.addToBackStack(null);
+                    noteTransaction.commit();
+                }
+            });
         }
 
         if (!sharedPreferences.getBoolean("checkPersonal1", false)) {
@@ -381,7 +417,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
     }
 
     public void addEmptySet() {
-        items.add(new Set(exerciseId));
+        items.add(new Set(context, exerciseId));
         Utils.updateSets(context, exerciseId, items);
         notifyItemInserted(items.size());
         notifyItemRangeChanged(items.size(), getItemCount());
@@ -397,13 +433,13 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
 
         private MaterialCardView parent;
         private EditText txtWeight, txtReps, txtWorkingTime, txtRestingTime, txtRIR, txtTargetReps,
-            txtComment, txtPersonal1, txtPersonal2;
+            txtComment, txtPersonal1, txtPersonal2, txtMood;
         private TextView txtIconWeight, txtIconReps, txtIconRIR, txtIconPersonal1, txtIconPersonal2;
         private TextWatcher textWatcherWeight, textWatcherReps, textWatcherWorkingTime, textWatcherRestingTime,
-            textWatcherRIR, textWatcherTargetReps, textWatcherComment, textWatcherPersonal1, textWatcherPersonal2;
+            textWatcherRIR, textWatcherTargetReps, textWatcherComment, textWatcherPersonal1, textWatcherPersonal2,
+            textWatcherMood;
         private ImageView btnDeleteSet, imageWorkingTime, imageRestingTime, imageFailure, imageTargetReps,
-            imageComment, imageNote;
-        private Spinner spinnerMood;
+            imageComment, imageNote, imageMood;
         private CheckBox checkboxFailure;
 
         public ViewHolder(@NonNull View itemView) {
@@ -424,7 +460,8 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
             txtIconRIR = itemView.findViewById(R.id.txtIconRIR);
             txtTargetReps = itemView.findViewById(R.id.txtTargetReps);
             imageTargetReps = itemView.findViewById(R.id.imageTargetReps);
-            spinnerMood = itemView.findViewById(R.id.spinnerMood);
+            txtMood = itemView.findViewById(R.id.txtMood);
+            imageMood = itemView.findViewById(R.id.imageMood);
             txtComment = itemView.findViewById(R.id.txtComment);
             imageComment = itemView.findViewById(R.id.imageComment);
             imageNote = itemView.findViewById(R.id.imageNote);

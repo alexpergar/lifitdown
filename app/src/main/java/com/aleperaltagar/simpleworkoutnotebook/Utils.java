@@ -2,12 +2,15 @@ package com.aleperaltagar.simpleworkoutnotebook;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.aleperaltagar.simpleworkoutnotebook.DatabaseFiles.ExercisesDatabase;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
+
+import static android.content.ContentValues.TAG;
 
 public class Utils {
     private static int ID_SET = 0;
@@ -68,6 +71,10 @@ public class Utils {
         ExercisesDatabase.getInstance(context).exerciseDao().deleteById(exerciseId);
     }
 
+    public static Exercise getItemById(Context context, int id) {
+        return ExercisesDatabase.getInstance(context).exerciseDao().getItemById(id);
+    }
+
     public static ArrayList<Exercise> getItemsByDate(Context context, Calendar calendar) {
         return (ArrayList<Exercise>) ExercisesDatabase.getInstance(context).exerciseDao().getItemsByDate(calendar.getTimeInMillis());
     }
@@ -78,6 +85,18 @@ public class Utils {
 
     public static Exercise getLastItem(Context context) {
         return ExercisesDatabase.getInstance(context).exerciseDao().getLastItem();
+    }
+
+    public static void updateSetNoteById(Context context, int exerciseId, int setId, String noteText) {
+        Exercise exercise = ExercisesDatabase.getInstance(context).exerciseDao().getItemById(exerciseId);
+        ArrayList<Set> newSets = new ArrayList<>();
+        for (Set s : exercise.getSets()) {
+            if (s.getId() == setId) {
+                s.setNote(noteText);
+            }
+            newSets.add(s);
+        }
+        Utils.updateSets(context, exerciseId, newSets);
     }
 
     public static void initiateSharedPreferences(Context context) {
@@ -93,8 +112,13 @@ public class Utils {
     }
 
 
-    public static int getSetID() {
-        ID_SET++;
-        return ID_SET;
+    public static int getSetID(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("prefs",0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        int value = sharedPreferences.getInt("setId", -1);
+        value++;
+        editor.putInt("setId", value);
+        editor.commit();
+        return value;
     }
 }
