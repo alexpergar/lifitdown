@@ -76,7 +76,6 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
                 datePicker.show(getFragmentManager(), "date picker");
             }
         });
-
         // Toolbar button to edit mode
         editButtonToolbar.setVisibility(View.VISIBLE);
         editButtonToolbar.setOnClickListener(new View.OnClickListener() {

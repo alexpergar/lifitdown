@@ -61,21 +61,18 @@ public class MainActivity extends AppCompatActivity {
                         Fragment notebookFragment = new MainFragment(currentDay);
                         FragmentTransaction notebookTransaction = getSupportFragmentManager().beginTransaction();
                         notebookTransaction.replace(R.id.container , notebookFragment);
-                        notebookTransaction.addToBackStack(null);
                         notebookTransaction.commit();
                         break;
                     case R.id.exercises:
                         Fragment listOfExercisesFragment = new ListOfExercisesFragment();
                         FragmentTransaction listOfExercisesTransaction = getSupportFragmentManager().beginTransaction();
                         listOfExercisesTransaction.replace(R.id.container , listOfExercisesFragment);
-                        listOfExercisesTransaction.addToBackStack(null);
                         listOfExercisesTransaction.commit();
                         break;
                     case R.id.settings:
                         Fragment settingsFragment = new SettingsFragment();
                         FragmentTransaction settingsTransaction = getSupportFragmentManager().beginTransaction();
                         settingsTransaction.replace(R.id.container , settingsFragment);
-                        settingsTransaction.addToBackStack(null);
                         settingsTransaction.commit();
                         break;
                     default:
