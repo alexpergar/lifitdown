@@ -75,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
                         settingsTransaction.replace(R.id.container , settingsFragment);
                         settingsTransaction.commit();
                         break;
+                    case R.id.about:
+                        IODatabaseManager ioDatabaseManager = new IODatabaseManager(getApplicationContext());
+                        ioDatabaseManager.exportDatabase();
+                        break;
                     default:
                         break;
                 }
