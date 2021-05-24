@@ -2,6 +2,7 @@ package com.aleperaltagar.simpleworkoutnotebook;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,9 @@ import java.util.ArrayList;
 public class ExerciseShowAdapter extends RecyclerView.Adapter<ExerciseShowAdapter.ViewHolder>{
 
     private ArrayList<Exercise> items = new ArrayList<>();
+    private ArrayList<Exercise> preloadedItems = new ArrayList<>();
     private Context context;
+    private int nextPositionLoaded;
 
     public ExerciseShowAdapter(Context context) {
         this.context = context;
@@ -68,9 +71,32 @@ public class ExerciseShowAdapter extends RecyclerView.Adapter<ExerciseShowAdapte
         return items.size();
     }
 
-    public void setItems(ArrayList<Exercise> items) {
-        this.items = items;
+    public void setItems(ArrayList<Exercise> preloadedItems) {
+        this.preloadedItems = preloadedItems;
+        if (preloadedItems.size() >= 5) {
+            this.items = new ArrayList<>(preloadedItems.subList(0,5));
+            this.nextPositionLoaded = 5;
+        } else {
+            this.items = preloadedItems;
+            this.nextPositionLoaded = -1;
+        }
         notifyDataSetChanged();
+    }
+
+    public int loadMore() {
+        ArrayList<Exercise> nextBatch;
+        int newNextPositionLoaded;
+        if (preloadedItems.size() - nextPositionLoaded >= 5) {
+            newNextPositionLoaded = nextPositionLoaded + 5;
+        } else {
+            newNextPositionLoaded = preloadedItems.size();
+        }
+        nextBatch = new ArrayList<>(preloadedItems.subList(nextPositionLoaded, newNextPositionLoaded));
+        items.addAll(nextBatch);
+        notifyItemRangeInserted(nextPositionLoaded, newNextPositionLoaded);
+        nextPositionLoaded = newNextPositionLoaded;
+//        Toast.makeText(context, String.valueOf(nextPositionLoaded), Toast.LENGTH_SHORT).show();
+        return nextPositionLoaded;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
