@@ -50,7 +50,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
 
         // Load every unique exercise name in the database into an ArrayList and put them in an adapter for the exerciseName
         everyUniqueExercise = Utils.getUniqueItemsString(context);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, everyUniqueExercise);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, everyUniqueExercise);
         holder.exerciseName.setAdapter(adapter);
 
         // Name of the exercise
@@ -69,7 +69,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         });
 
         // Setting the sets recyclerview
-        SetAdapter setsAdapter = new SetAdapter(context, items.get(position).getId());
+        SetAdapter setsAdapter = new SetAdapter(context, items.get(position).getId(), false);
         setsAdapter.setItems(items.get(position).getSets());
         holder.setsRecView.setAdapter(setsAdapter);
         holder.setsRecView.setLayoutManager((new LinearLayoutManager(context, RecyclerView.VERTICAL, false)));
@@ -98,6 +98,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
             }
         });
 
+        // Button to delete the exercise
         holder.btnDeleteExercise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,7 +119,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
     }
 
     public void switchEditMode(boolean editMode) {
-        editable = editMode;
+        this.editable = editMode;
         notifyDataSetChanged();
     }
 
@@ -157,7 +158,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
             btnDeleteExercise = itemView.findViewById(R.id.btnDeleteExercise);
             btnAddSet = itemView.findViewById(R.id.btnAddSet);
             btnPreviousMarks = itemView.findViewById(R.id.buttonPreviousMarks);
-
         }
     }
 }

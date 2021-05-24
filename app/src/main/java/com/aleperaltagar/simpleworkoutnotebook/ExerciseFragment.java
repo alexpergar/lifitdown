@@ -2,10 +2,17 @@ package com.aleperaltagar.simpleworkoutnotebook;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ExerciseFragment extends Fragment {
 
@@ -22,6 +31,12 @@ public class ExerciseFragment extends Fragment {
     private RecyclerView exercisesRecView;
     private ExerciseShowAdapter exercisesAdapter;
     private TextView textToolbar;
+    private ImageView editButtonToolbar;
+    private ProgressBar loadingSpinner;
+    private Button btnLoadMore;
+    private ArrayList<Exercise> exercises;
+
+    private static final String TAG = "ExerciseFragment";
 
     public ExerciseFragment(String exerciseName) {
         this.exerciseName = exerciseName;
@@ -39,6 +54,18 @@ public class ExerciseFragment extends Fragment {
         // Change toolbar text and disable click listener
         textToolbar.setOnClickListener(null);
         textToolbar.setText(exerciseName);
+        editButtonToolbar.setVisibility(View.GONE);
+
+        btnLoadMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int lastPosition = exercisesAdapter.loadMore();
+                Log.d(TAG, "onClick: " + exercises.size() + " " + lastPosition);
+                if (lastPosition == exercises.size()) {
+                    btnLoadMore.setVisibility(View.GONE);
+                }
+            }
+        });
 
         return view;
     }
@@ -46,17 +73,35 @@ public class ExerciseFragment extends Fragment {
     private void initViews(View view) {
         exercisesRecView  = view.findViewById(R.id.exerciseFragmentRecview);
         textToolbar = getActivity().findViewById(R.id.textToolbar);
+        editButtonToolbar = getActivity().findViewById(R.id.editButtonToolbar);
+        loadingSpinner = view.findViewById(R.id.loading_spinner);
+        btnLoadMore = view.findViewById(R.id.btnLoadMore);
     }
 
     private void initRecViews(String name) {
         exercisesAdapter = new ExerciseShowAdapter(getActivity());
         exercisesRecView.setAdapter(exercisesAdapter);
         exercisesRecView.setLayoutManager((new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false)));
+        loadingSpinner.setVisibility(View.VISIBLE);
 
-        ArrayList<Exercise> exercises = Utils.getItemsByName(getActivity(), name);
-        if (null != exercises) {
-            exercisesAdapter.setItems(exercises);
-        }
+        // Load the items in the background and meanwhile show a loading spinner
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+        executorService.submit(new Runnable() {
+            @Override
+            public void run() {
+                exercises = Utils.getItemsByName(getActivity(), name);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadingSpinner.setVisibility(View.GONE);
+                        if (null != exercises) {
+                            exercisesAdapter.setItems(exercises);
+                        }
+                    }
+                });
+            }
+        });
     }
 
 }

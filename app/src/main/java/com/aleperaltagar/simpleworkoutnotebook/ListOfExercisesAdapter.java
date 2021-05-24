@@ -42,7 +42,7 @@ public class ListOfExercisesAdapter extends RecyclerView.Adapter<ListOfExercises
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         holder.listOfExercisesName.setText(items.get(position));
-        holder.listOfExercisesName.setOnClickListener(new View.OnClickListener() {
+        holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Fragment exerciseFragment = new ExerciseFragment(items.get(position));
@@ -72,7 +72,7 @@ public class ListOfExercisesAdapter extends RecyclerView.Adapter<ListOfExercises
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            parent = itemView.findViewById(R.id.showExerciseParent);
+            parent = itemView.findViewById(R.id.listOfExerciseParent);
             listOfExercisesName = itemView.findViewById(R.id.listOfExercisesName);
         }
     }

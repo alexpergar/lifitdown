@@ -12,8 +12,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.aleperaltagar.simpleworkoutnotebook.DatabaseFiles.ExercisesDatabase;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,10 +29,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Utils.initiateSharedPreferences(this);
+
         initViews();
 
+        // Set today's date
+        Calendar currentDay = Calendar.getInstance();
+        currentDay.set(Calendar.HOUR_OF_DAY, 0);
+        currentDay.set(Calendar.MINUTE, 0);
+        currentDay.set(Calendar.SECOND, 0);
+        currentDay.set(Calendar.MILLISECOND, 0);
+
         // Fragment manager
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, new MainFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, new MainFragment(currentDay)).commit();
 
         // Navigation drawer
         setSupportActionBar(toolbar);
@@ -46,27 +58,30 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()) {
                     case R.id.notebook:
-                        Fragment notebookFragment = new MainFragment();
+                        Fragment notebookFragment = new MainFragment(currentDay);
                         FragmentTransaction notebookTransaction = getSupportFragmentManager().beginTransaction();
                         notebookTransaction.replace(R.id.container , notebookFragment);
-                        notebookTransaction.addToBackStack(null);
                         notebookTransaction.commit();
                         break;
                     case R.id.exercises:
                         Fragment listOfExercisesFragment = new ListOfExercisesFragment();
                         FragmentTransaction listOfExercisesTransaction = getSupportFragmentManager().beginTransaction();
                         listOfExercisesTransaction.replace(R.id.container , listOfExercisesFragment);
-                        listOfExercisesTransaction.addToBackStack(null);
                         listOfExercisesTransaction.commit();
+                        break;
+                    case R.id.settings:
+                        Fragment settingsFragment = new SettingsFragment();
+                        FragmentTransaction settingsTransaction = getSupportFragmentManager().beginTransaction();
+                        settingsTransaction.replace(R.id.container , settingsFragment);
+                        settingsTransaction.commit();
                         break;
                     default:
                         break;
                 }
+                drawer.closeDrawers();
                 return false;
             }
         });
-
-
 
     }
 

@@ -2,6 +2,9 @@ package com.aleperaltagar.simpleworkoutnotebook;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +20,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +30,10 @@ import org.w3c.dom.Text;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
@@ -36,23 +46,26 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
     private ImageView editButtonToolbar;
     private Fragment context = this;
     private Calendar currentDay;
+    private ProgressBar loadingSpinner, toolbarLoadingSpinner;
     private boolean editMode = false;
+    private ArrayList<Exercise> exercises;
+    private View thisView;
+
+    public MainFragment(Calendar currentDay) {
+        this.currentDay = currentDay;
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inflate layout
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        // Set today's date
-        currentDay = Calendar.getInstance();
-        currentDay.set(Calendar.HOUR_OF_DAY, 0);
-        currentDay.set(Calendar.MINUTE, 0);
-        currentDay.set(Calendar.SECOND, 0);
-        currentDay.set(Calendar.MILLISECOND, 0);
-
-        // Initialize views for today
-        initViews(view);
+        // Initialize the toolbar
+        textToolbar = getActivity().findViewById(R.id.textToolbar);
+        editButtonToolbar = getActivity().findViewById(R.id.editButtonToolbar);
+        ProgressBar toolbarLoadingSpinner = getActivity().findViewById(R.id.toolbarLoadingSpinner);
+        String dateString = DateFormat.getDateInstance().format(currentDay.getTime());
+        textToolbar.setText(dateString);
+        editButtonToolbar.setImageResource(R.drawable.ic_edit);
 
         // Toolbar date picker on date click
         textToolbar.setOnClickListener(new View.OnClickListener() {
@@ -63,29 +76,55 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
                 datePicker.show(getFragmentManager(), "date picker");
             }
         });
-
         // Toolbar button to edit mode
+        editButtonToolbar.setVisibility(View.VISIBLE);
         editButtonToolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editMode = !editMode;
-                exercisesAdapter.switchEditMode(editMode);
+                editButtonToolbar.setVisibility(View.GONE);
+                toolbarLoadingSpinner.setVisibility(View.VISIBLE);
+                if (editMode) {
+                    editButtonToolbar.setImageResource(R.drawable.ic_check);
+                } else {
+                    editButtonToolbar.setImageResource(R.drawable.ic_edit);
+                }
+                // Do the action after setting the loading spinner rolling
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        exercisesAdapter.switchEditMode(editMode);
+                        editButtonToolbar.setVisibility(View.VISIBLE);
+                        toolbarLoadingSpinner.setVisibility(View.GONE);
+                    }
+                }, 0);
             }
         });
 
-        // Add new exercise button
-        btnAddExercise.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Exercise newExercise = new Exercise(currentDay);
-                exercisesAdapter.addNewExercise(newExercise);
-            }
-        });
+        // If the view exists (because it was backstacked), load it
+        if (thisView == null) {
+            // Inflate layout
+            View view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        // Set everything for the current date
-        setWorkoutDay(currentDay);
+            // Initialize views for today
+            initViews(view);
 
-        return view;
+            // Add new exercise button
+            btnAddExercise.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Exercise newExercise = new Exercise(currentDay);
+                    exercisesAdapter.addNewExercise(newExercise);
+                }
+            });
+
+            // Set everything for the current date
+            setWorkoutDay(currentDay);
+
+            // Save the view to recover it
+            thisView = view;
+        }
+        return thisView;
     }
 
     private void initRecViews(Calendar day) {
@@ -93,18 +132,36 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
         exercisesRecView.setAdapter(exercisesAdapter);
         exercisesRecView.setLayoutManager((new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false)));
 
-        ArrayList<Exercise> exercises = Utils.getItemsByDate(getActivity(), day);
-        if (null != exercises) {
-            exercisesAdapter.setItems(exercises);
-        }
+        // Show loading spinner meanwhile the content loads
+        loadingSpinner.setVisibility(View.VISIBLE);
+        btnAddExercise.setVisibility(View.GONE);
+
+        // Get the data from the database from a service thread
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+        executorService.submit(new Runnable() {
+            @Override
+            public void run() {
+                exercises = Utils.getItemsByDate(getActivity(), day);
+                SystemClock.sleep(300); // sleep 0.3s to let the drawer close (not a very good solution)
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadingSpinner.setVisibility(View.GONE);
+                        btnAddExercise.setVisibility(View.VISIBLE);
+                        if (null != exercises) {
+                            exercisesAdapter.setItems(exercises);
+                        }
+                    }
+                });
+            }
+        });
     }
 
     private void initViews(View view) {
         exercisesRecView = view.findViewById(R.id.exercisesRecView);
         btnAddExercise = view.findViewById(R.id.btnAddExercise);
-        textToolbar = getActivity().findViewById(R.id.textToolbar);
-        editButtonToolbar = getActivity().findViewById(R.id.editButtonToolbar);
-        context = this;
+        loadingSpinner = view.findViewById(R.id.loading_spinner);
     }
 
     // Function to reset all data related to day (toolbar, recyclerview)
@@ -114,6 +171,7 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
         // Change the text of the toolbar to the date
         String dateString = DateFormat.getDateInstance().format(day.getTime());
         textToolbar.setText(dateString);
+        editButtonToolbar.setImageResource(R.drawable.ic_edit);
     }
 
     // This triggers when a day is chosen

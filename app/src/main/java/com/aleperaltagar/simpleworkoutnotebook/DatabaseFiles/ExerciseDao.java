@@ -12,6 +12,9 @@ import java.util.List;
 @Dao
 public interface ExerciseDao {
 
+    @Query("DELETE FROM exercises")
+    public void nukeTable();
+
     @Insert
     void insert(Exercise exercise);
 
