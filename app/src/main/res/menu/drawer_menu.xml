@@ -17,6 +17,11 @@
         android:icon="@drawable/ic_settings"/>
 
     <item
+        android:title="Manage data"
+        android:id="@+id/manageDatabase"
+        android:icon="@drawable/ic_settings"/>
+
+    <item
         android:title="About"
         android:id="@+id/about"
         android:icon="@drawable/ic_settings"/>

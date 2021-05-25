@@ -94,6 +94,12 @@ public class MainActivity extends AppCompatActivity {
                         settingsTransaction.replace(R.id.container , settingsFragment);
                         settingsTransaction.commit();
                         break;
+                    case R.id.manageDatabase:
+                        Fragment dbManagementFragment = new DbManagementFragment();
+                        FragmentTransaction dbManagementTransaction = getSupportFragmentManager().beginTransaction();
+                        dbManagementTransaction.replace(R.id.container , dbManagementFragment);
+                        dbManagementTransaction.commit();
+                        break;
                     case R.id.about:
                         IODatabaseManager ioDatabaseManager = new IODatabaseManager(getApplicationContext());
                         pickFile();
@@ -114,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
     }
 
-    private void pickFile() {
+    public void pickFile() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("text/plain");
