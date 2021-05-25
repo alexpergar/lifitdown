@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.about:
                         IODatabaseManager ioDatabaseManager = new IODatabaseManager(getApplicationContext());
-                        importDatabase();
+                        pickFile();
                         break;
                     default:
                         break;
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
     }
 
-    private void importDatabase() {
+    private void pickFile() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("text/plain");
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == READ_REQUEST_CODE && resultCode == RESULT_OK) {
-            ArrayList<String> text = new ArrayList<>();
+            ArrayList<String> imported = new ArrayList<>();
             if (data != null) {
                 Uri uri = data.getData();
                 try {
@@ -133,31 +133,14 @@ public class MainActivity extends AppCompatActivity {
                     BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
                     String mLine;
                     while ((mLine = r.readLine()) != null) {
-                        text.add(mLine);
+                        imported.add(mLine);
                     }
+                    IODatabaseManager ioDatabaseManager = new IODatabaseManager(getApplicationContext());
+                    ioDatabaseManager.importDatabase(this, imported);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
-    }
-
-    public String getPath(Uri uri) {
-
-        String path = null;
-        String[] projection = { MediaStore.Files.FileColumns.DATA };
-        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-
-        if(cursor == null){
-            path = uri.getPath();
-        }
-        else{
-            cursor.moveToFirst();
-            int column_index = cursor.getColumnIndexOrThrow(projection[0]);
-            path = cursor.getString(column_index);
-            cursor.close();
-        }
-
-        return ((path == null || path.isEmpty()) ? (uri.getPath()) : path);
     }
 }

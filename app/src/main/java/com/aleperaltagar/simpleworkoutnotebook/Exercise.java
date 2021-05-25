@@ -78,12 +78,12 @@ public class Exercise {
         this.sets = sets;
     }
 
-    @Ignore
     @Override
     public String toString() {
         return "Exercise{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", calendar=" + calendar +
                 ", sets=" + sets +
                 '}';
     }

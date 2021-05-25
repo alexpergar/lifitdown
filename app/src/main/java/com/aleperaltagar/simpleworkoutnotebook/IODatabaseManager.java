@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 
@@ -73,12 +74,26 @@ public class IODatabaseManager {
         }
     }
 
-//    public void importDatabase() {
-//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//        intent.addCategory(Intent.CATEGORY_OPENABLE);
-//        intent.setType("text/plain");
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        ((Activity) context).startActivityForResult(intent, READ_REQUEST_CODE);
-//    }
+    public void importDatabase(Context context, ArrayList<String> imported) {
+        ArrayList<Exercise> newExercises = new ArrayList<>();
+        SetsConverter setsConverter = new SetsConverter();
+        try {
+            for (String stringExercise : imported) {
+                String[] split = stringExercise.split(";");
+                String name = split[1];
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(Long.parseLong(split[2]));
+                ArrayList<Set> sets = setsConverter.jsonToSets(split[3]);
+                Exercise newExercise = new Exercise(name, calendar, sets);
+                newExercises.add(newExercise);
+            }
+
+            // TODO: 5/25/21 Get every file in the database 
+            
+        } catch (Exception e) {
+            Toast.makeText(context, "This file is not supported", Toast.LENGTH_SHORT).show();
+        }
+
+    }
 
 }
