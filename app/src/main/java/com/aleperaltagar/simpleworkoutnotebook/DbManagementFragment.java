@@ -1,5 +1,7 @@
 package com.aleperaltagar.simpleworkoutnotebook;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,9 +9,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 public class DbManagementFragment extends Fragment {
@@ -47,6 +51,30 @@ public class DbManagementFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ((MainActivity)getActivity()).pickFile();
+            }
+        });
+
+        btnDeleteDb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Warning")
+                        .setMessage("Are you sure you want to delete the database?\nData cannot be recovered.")
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Utils.deleteDatabase(getActivity());
+                                Toast.makeText(getActivity(), "Database deleted successfully", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .create()
+                        .show();
             }
         });
 

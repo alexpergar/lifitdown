@@ -39,7 +39,7 @@ public class IODatabaseManager {
 
             // Create the file in the local files directory
             File path = context.getFilesDir();
-            File file = new File(path, dateString + "_db.csv");
+            File file = new File(path, dateString + "_db.txt");
             FileOutputStream stream = new FileOutputStream(file);
 
             // Set the converted to convert the sets to json
@@ -51,7 +51,7 @@ public class IODatabaseManager {
             // Save every exercise in a string variable
             String textToFile = "";
             for (Exercise e : wholeDatabase) {
-                textToFile += e.getId() + ";" + e.getName() + ";" + e.getCalendar().getTimeInMillis() + ";" + setsConverter.setsToJson(e.getSets()) + ";\n";
+                textToFile += e.getId() + "\t" + e.getName() + "\t" + e.getCalendar().getTimeInMillis() + "\t" + setsConverter.setsToJson(e.getSets()) + "\n";
             }
             stream.write(textToFile.getBytes());
             stream.close();
@@ -68,7 +68,6 @@ public class IODatabaseManager {
             Intent shareIntent = Intent.createChooser(sendIntent, "Share database");
             shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(shareIntent);
-
         } catch (IOException error) {
             Log.d(TAG, "exportDatabase: " + error);
         }
@@ -79,21 +78,35 @@ public class IODatabaseManager {
         SetsConverter setsConverter = new SetsConverter();
         try {
             for (String stringExercise : imported) {
-                String[] split = stringExercise.split(";");
+                String[] split = stringExercise.split("\t");
                 String name = split[1];
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(Long.parseLong(split[2]));
                 ArrayList<Set> sets = setsConverter.jsonToSets(split[3]);
-                Exercise newExercise = new Exercise(name, calendar, sets);
+                ArrayList<Set> setsNewId = changeSetsId(sets);
+                Exercise newExercise = new Exercise(name, calendar, setsNewId);
                 newExercises.add(newExercise);
             }
+            // TODO: 5/25/21 Get every file in the database
+            for (Exercise exercise : newExercises) {
+                Utils.addExercise(context, exercise);
+            }
 
-            // TODO: 5/25/21 Get every file in the database 
+            Toast.makeText(context, "Database imported successfully", Toast.LENGTH_SHORT).show();
             
         } catch (Exception e) {
             Toast.makeText(context, "This file is not supported", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private ArrayList<Set> changeSetsId(ArrayList<Set> sets) {
+        ArrayList<Set> newSets = new ArrayList<>();
+        for (Set set : sets) {
+            set.setId(Utils.getSetID(context));
+            newSets.add(set);
+        }
+        return newSets;
     }
 
 }

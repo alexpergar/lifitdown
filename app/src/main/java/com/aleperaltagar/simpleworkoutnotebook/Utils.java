@@ -23,6 +23,11 @@ public class Utils {
         ArrayList<String> uniqueExercises = new ArrayList<>();
         ArrayList<Exercise> exercises =  (ArrayList<Exercise>) ExercisesDatabase.getInstance(context).exerciseDao().getAllItems();
 
+        // If there is no exercises, return an empty list of strings
+        if (exercises.equals(new ArrayList<Exercise>())) {
+            return new ArrayList<String>();
+        }
+
         // Look if it has been already added an exercise with the same name
         for (Exercise e : exercises) {
             boolean present = false;
@@ -97,6 +102,16 @@ public class Utils {
             newSets.add(s);
         }
         Utils.updateSets(context, exerciseId, newSets);
+    }
+
+    public static void deleteDatabase(Context context) {
+        ExercisesDatabase.getInstance(context).exerciseDao().nukeTable();
+
+        // Put sets ID back to -1
+        SharedPreferences sharedPreferences = context.getSharedPreferences("prefs",0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("setId", -1);
+        editor.commit();
     }
 
     public static void initiateSharedPreferences(Context context) {
