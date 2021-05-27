@@ -43,8 +43,8 @@
                 android:layout_height="wrap_content"
                 android:text="Load more exercises"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:visibility="visible"
-                android:layout_marginTop="12dp"
+                android:visibility="gone"
+                android:layout_marginVertical="12dp"
                 android:layout_below="@id/exerciseFragmentRecview"
                 android:layout_centerHorizontal="true"/>
 

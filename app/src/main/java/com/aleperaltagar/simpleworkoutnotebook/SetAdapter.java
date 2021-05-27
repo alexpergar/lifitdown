@@ -326,7 +326,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
             }
         }
 
-        // TODO: 5/14/21 click to open an editor fragment
         if (!sharedPreferences.getBoolean("checkNote", false)) {
             holder.imageNote.setVisibility(View.GONE);
         } else {

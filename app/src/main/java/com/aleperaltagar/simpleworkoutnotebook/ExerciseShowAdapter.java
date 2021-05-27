@@ -71,9 +71,9 @@ public class ExerciseShowAdapter extends RecyclerView.Adapter<ExerciseShowAdapte
         return items.size();
     }
 
-    public void setItems(ArrayList<Exercise> preloadedItems) {
+    public int setItems(ArrayList<Exercise> preloadedItems) {
         this.preloadedItems = preloadedItems;
-        if (preloadedItems.size() >= 5) {
+        if (preloadedItems.size() > 5) {
             this.items = new ArrayList<>(preloadedItems.subList(0,5));
             this.nextPositionLoaded = 5;
         } else {
@@ -81,12 +81,13 @@ public class ExerciseShowAdapter extends RecyclerView.Adapter<ExerciseShowAdapte
             this.nextPositionLoaded = -1;
         }
         notifyDataSetChanged();
+        return nextPositionLoaded;
     }
 
     public int loadMore() {
         ArrayList<Exercise> nextBatch;
         int newNextPositionLoaded;
-        if (preloadedItems.size() - nextPositionLoaded >= 5) {
+        if (preloadedItems.size() - nextPositionLoaded > 5) {
             newNextPositionLoaded = nextPositionLoaded + 5;
         } else {
             newNextPositionLoaded = preloadedItems.size();

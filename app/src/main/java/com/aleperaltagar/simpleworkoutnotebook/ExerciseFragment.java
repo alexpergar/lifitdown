@@ -96,7 +96,13 @@ public class ExerciseFragment extends Fragment {
                     public void run() {
                         loadingSpinner.setVisibility(View.GONE);
                         if (null != exercises) {
-                            exercisesAdapter.setItems(exercises);
+                            // Set the first five items. If every item was displayed (-1 returned), set button visibility to GONE
+                            int nextPositionLoaded = exercisesAdapter.setItems(exercises);
+                            if (nextPositionLoaded == -1) {
+                                btnLoadMore.setVisibility(View.GONE);
+                            } else {
+                                btnLoadMore.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
                 });

@@ -87,7 +87,6 @@ public class IODatabaseManager {
                 Exercise newExercise = new Exercise(name, calendar, setsNewId);
                 newExercises.add(newExercise);
             }
-            // TODO: 5/25/21 Get every file in the database
             for (Exercise exercise : newExercises) {
                 Utils.addExercise(context, exercise);
             }
