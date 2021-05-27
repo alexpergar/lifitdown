@@ -47,6 +47,7 @@ public class ExerciseShowAdapter extends RecyclerView.Adapter<ExerciseShowAdapte
         // Setting the date
         String dateString = DateFormat.getDateInstance().format(items.get(position).getCalendar().getTime());
         holder.date.setText(dateString);
+        holder.orderNumber.setText(Utils.getPositionInDay(context, items.get(position)));
         holder.date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,13 +105,14 @@ public class ExerciseShowAdapter extends RecyclerView.Adapter<ExerciseShowAdapte
 
         private MaterialCardView parent;
         private RecyclerView setsRecView;
-        private TextView date;
+        private TextView date, orderNumber;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             parent = itemView.findViewById(R.id.showExerciseParent);
             setsRecView = itemView.findViewById(R.id.showSetsRecView);
             date = itemView.findViewById(R.id.showExerciseDate);
+            orderNumber = itemView.findViewById(R.id.orderNumber);
         }
     }
 }

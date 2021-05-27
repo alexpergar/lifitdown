@@ -136,4 +136,16 @@ public class Utils {
         editor.commit();
         return value;
     }
+
+    public static String getPositionInDay(Context context, Exercise exercise) {
+        ArrayList<Exercise> thatDayExercises = getItemsByDate(context, exercise.getCalendar());
+        int order = 0;
+        for (Exercise e : thatDayExercises) {
+            order++;
+            if (e.getId() == exercise.getId()) {
+                return String.valueOf(order);
+            }
+        }
+        return "?";
+    }
 }
