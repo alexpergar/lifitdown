@@ -7,7 +7,7 @@
     android:layout_height="140dp"
     android:gravity="bottom"
     android:padding="10dp"
-    android:background="@color/ic_background_purple"   >
+    android:background="?colorPrimary"   >
 
     <ImageView
         android:id="@+id/imageView"
