@@ -17,6 +17,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                style="@style/fonts_color"
                 android:id="@+id/TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -113,6 +114,7 @@
                 android:id="@+id/TextView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/fonts_color"
                 android:layout_marginTop="8dp"
                 android:text="Weight unit:"
                 android:textSize="17sp"

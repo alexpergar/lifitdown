@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:title="Notebook"
-        android:id="@+id/notebook"
-        android:icon="@drawable/ic_settings"/>
+<item
+    android:title="Notebook"
+    android:id="@+id/notebook"/>
+    <!--android:icon="@drawable/ic_settings"/-->
 
-    <item
-        android:title="Exercises"
-        android:id="@+id/exercises"
-        android:icon="@drawable/ic_settings"/>
+<item
+    android:title="Exercises"
+    android:id="@+id/exercises"/>
+    <!--android:icon="@drawable/ic_settings"-->
 
-    <item
-        android:title="Settings"
-        android:id="@+id/settings"
-        android:icon="@drawable/ic_settings"/>
+<item
+    android:title="Settings"
+    android:id="@+id/settings"/>
+    <!--android:icon="@drawable/ic_settings"/-->
 
-    <item
-        android:title="Manage data"
-        android:id="@+id/manageDatabase"
-        android:icon="@drawable/ic_settings"/>
+<item
+    android:title="Manage data"
+    android:id="@+id/manageDatabase"/>
+    <!--android:icon="@drawable/ic_settings"/-->
 
-    <item
-        android:title="About"
-        android:id="@+id/about"
-        android:icon="@drawable/ic_settings"/>
+<item
+    android:title="About"
+    android:id="@+id/about"/>
+    <!--android:icon="@drawable/ic_settings"/-->
 
 </menu>

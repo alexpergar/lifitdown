@@ -2,18 +2,33 @@
     <!-- Base application theme. -->
     <style name="Theme.SimpleWorkoutNotebook" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/salmon_soft</item>
-        <item name="colorPrimaryVariant">@color/salmon_soft_variant</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/primary_day</item>
+        <item name="colorPrimaryVariant">@color/primary_variant_day</item>
+        <item name="colorOnPrimary">@color/on_primary_day</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/purple_soft</item>
-        <item name="colorSecondaryVariant">@color/purple_soft_variant</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/secondary_day</item>
+        <item name="colorSecondaryVariant">@color/secondary_variant_day</item>
+        <item name="colorOnSecondary">@color/on_secondary_day</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
-<!--        <item name="android:colorBackground">@color/black</item>-->
-        <!-- CardView color. -->
-<!--        <item name="materialCardViewStyle">@style/personalCardView</item>-->
+        <!-- Personal changes -->
+        <item name ="android:colorBackground">@color/background_day</item>
+    </style>
+
+    <style name="cardViewStyle">
+        <item name ="cardBackgroundColor">@color/cardview_day</item>
+    </style>
+
+    <style name="deeperCardViewStyle">
+        <item name ="cardBackgroundColor">@color/deepercardview_day</item>
+    </style>
+
+    <!-- Inner view style -->
+    <style name="fonts_color">
+        <item name="android:textColor">@color/fonts_day</item>
+    </style>
+
+    <style name="button_color">
+        <item name="android:background">@color/fonts_day</item>
     </style>
 </resources>

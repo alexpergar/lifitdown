@@ -7,11 +7,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -77,30 +79,35 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()) {
                     case R.id.notebook:
+                        clearBackstack();
                         Fragment notebookFragment = new MainFragment(currentDay);
                         FragmentTransaction notebookTransaction = getSupportFragmentManager().beginTransaction();
                         notebookTransaction.replace(R.id.container , notebookFragment);
                         notebookTransaction.commit();
                         break;
                     case R.id.exercises:
+                        clearBackstack();
                         Fragment listOfExercisesFragment = new ListOfExercisesFragment();
                         FragmentTransaction listOfExercisesTransaction = getSupportFragmentManager().beginTransaction();
                         listOfExercisesTransaction.replace(R.id.container , listOfExercisesFragment);
                         listOfExercisesTransaction.commit();
                         break;
                     case R.id.settings:
+                        clearBackstack();
                         Fragment settingsFragment = new SettingsFragment();
                         FragmentTransaction settingsTransaction = getSupportFragmentManager().beginTransaction();
                         settingsTransaction.replace(R.id.container , settingsFragment);
                         settingsTransaction.commit();
                         break;
                     case R.id.manageDatabase:
+                        clearBackstack();
                         Fragment dbManagementFragment = new DbManagementFragment();
                         FragmentTransaction dbManagementTransaction = getSupportFragmentManager().beginTransaction();
                         dbManagementTransaction.replace(R.id.container , dbManagementFragment);
                         dbManagementTransaction.commit();
                         break;
                     case R.id.about:
+                        clearBackstack();
                         IODatabaseManager ioDatabaseManager = new IODatabaseManager(getApplicationContext());
                         pickFile();
                         break;
@@ -125,6 +132,13 @@ public class MainActivity extends AppCompatActivity {
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("text/plain");
         startActivityForResult(intent, READ_REQUEST_CODE);
+    }
+
+    private void clearBackstack() {
+        FragmentManager fm = getSupportFragmentManager();
+        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+            fm.popBackStack();
+        }
     }
 
     @Override

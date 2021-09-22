@@ -30,6 +30,9 @@ public interface ExerciseDao {
     @Query("UPDATE exercises SET name=:name WHERE id=:id")
     void updateExerciseName(int id, String name);
 
+    @Query("UPDATE exercises SET name=:newName WHERE name=:oldName")
+    void updateEveryExerciseName(String newName, String oldName);
+
     @Query("DELETE FROM exercises WHERE id=:id")
     void deleteById(int id);
 
@@ -41,4 +44,7 @@ public interface ExerciseDao {
 
     @Query("SELECT * FROM exercises ORDER BY id DESC LIMIT 1")
     Exercise getLastItem();
+
+    @Query("DELETE FROM exercises WHERE name=:name")
+    void deleteByName(String name);
 }

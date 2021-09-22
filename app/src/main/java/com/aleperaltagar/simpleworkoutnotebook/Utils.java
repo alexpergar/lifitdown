@@ -72,8 +72,16 @@ public class Utils {
         ExercisesDatabase.getInstance(context).exerciseDao().updateExerciseName(exerciseId, name);
     }
 
+    public static void updateEveryExerciseName(Context context, String newName, String oldName) {
+        ExercisesDatabase.getInstance(context).exerciseDao().updateEveryExerciseName(newName, oldName);
+    }
+
     public static void deleteExercise(Context context, int exerciseId) {
         ExercisesDatabase.getInstance(context).exerciseDao().deleteById(exerciseId);
+    }
+
+    public static void deleteExerciseByName(Context context, String exerciseName) {
+        ExercisesDatabase.getInstance(context).exerciseDao().deleteByName(exerciseName);
     }
 
     public static Exercise getItemById(Context context, int id) {

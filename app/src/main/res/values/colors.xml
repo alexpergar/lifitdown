@@ -13,5 +13,27 @@
     <color name="salmon_soft_variant">#ffcccb</color>
     <color name="purple_soft">#e1bee7</color>
     <color name="purple_soft_variant">#fff1ff</color>
-    <color name="kind_of_pink">#AA00FF</color>
+    <color name="kind_of_pink">#9769AE</color>
+
+    <color name="primary_night">#525FA6</color>
+    <color name="primary_variant_night">#334088</color>
+    <color name="on_primary_night">#FFFFFF</color>
+    <color name="secondary_night">#FFFFFF</color>
+    <color name="secondary_variant_night">#9F9F9F</color>
+    <color name="on_secondary_night">#2E2E2E</color>
+    <color name="background_night">#29384A</color>
+    <color name="cardview_night">#3A4859</color>
+    <color name="deepercardview_night">#3A4859</color>
+    <color name="fonts_night">#FFFFFF</color>
+
+    <color name="primary_day">#FF8080</color>
+    <color name="primary_variant_day">#BD7676</color>
+    <color name="on_primary_day">#1B1B1B</color>
+    <color name="secondary_day">#FF6D00</color>
+    <color name="secondary_variant_day">#AC6F42</color>
+    <color name="on_secondary_day">#1B1B1B</color>
+    <color name="background_day">#FFFFFF</color>
+    <color name="cardview_day">#FFFFFF</color>
+    <color name="deepercardview_day">#FFFFFF</color>
+    <color name="fonts_day">#151515</color>
 </resources>
