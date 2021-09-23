@@ -42,11 +42,11 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
     private RecyclerView exercisesRecView;
     private ExerciseAdapter exercisesAdapter;
     private ImageView btnAddExercise;
-    private TextView textToolbar;
+    private TextView textToolbar, txtNoExercises;
     private ImageView editButtonToolbar;
     private Fragment context = this;
     private Calendar currentDay;
-    private ProgressBar loadingSpinner, toolbarLoadingSpinner;
+    private ProgressBar loadingSpinner;
     private boolean editMode = false;
     private ArrayList<Exercise> exercises;
     private View thisView;
@@ -76,6 +76,7 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
                 datePicker.show(getFragmentManager(), "date picker");
             }
         });
+
         // Toolbar button to edit mode
         editButtonToolbar.setVisibility(View.VISIBLE);
         editButtonToolbar.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +116,7 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
                 public void onClick(View v) {
                     Exercise newExercise = new Exercise(currentDay);
                     exercisesAdapter.addNewExercise(newExercise);
+                    txtNoExercises.setVisibility(View.GONE);
                 }
             });
 
@@ -135,6 +137,7 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
         // Show loading spinner meanwhile the content loads
         loadingSpinner.setVisibility(View.VISIBLE);
         btnAddExercise.setVisibility(View.GONE);
+        txtNoExercises.setVisibility(View.GONE);
 
         // Get the data from the database from a service thread
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -143,7 +146,7 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
             @Override
             public void run() {
                 exercises = Utils.getItemsByDate(getActivity(), day);
-                SystemClock.sleep(300); // sleep 0.3s to let the drawer close (not a very good solution)
+                SystemClock.sleep(250); // sleep 0.25s to let the drawer close (not a very good solution)
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -151,6 +154,9 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
                         btnAddExercise.setVisibility(View.VISIBLE);
                         if (null != exercises) {
                             exercisesAdapter.setItems(exercises);
+                        }
+                        if (exercises.isEmpty()){
+                            txtNoExercises.setVisibility(View.VISIBLE);
                         }
                     }
                 });
@@ -162,6 +168,7 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
         exercisesRecView = view.findViewById(R.id.exercisesRecView);
         btnAddExercise = view.findViewById(R.id.btnAddExercise);
         loadingSpinner = view.findViewById(R.id.loading_spinner);
+        txtNoExercises = view.findViewById(R.id.txtNoExercises);
     }
 
     // Function to reset all data related to day (toolbar, recyclerview)

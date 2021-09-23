@@ -1,6 +1,9 @@
 package com.aleperaltagar.simpleworkoutnotebook;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -9,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +22,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ListOfExercisesFragment extends Fragment {
 
@@ -25,9 +31,10 @@ public class ListOfExercisesFragment extends Fragment {
 
     private RecyclerView listOfExercisesRecView;
     private ListOfExercisesAdapter listOfExercisesAdapter;
-    private TextView textToolbar;
+    private TextView textToolbar, txtNoExercises;
     private ImageView editButtonToolbar;
     private AutoCompleteTextView txtSearchExercise;
+    private ProgressBar loadingSpinner;
     ArrayList<String> exercises = new ArrayList<>();
 
     @Nullable
@@ -79,6 +86,8 @@ public class ListOfExercisesFragment extends Fragment {
     private void initViews(View view) {
         listOfExercisesRecView  = view.findViewById(R.id.listOfExercisesFragmentRecview);
         txtSearchExercise = view.findViewById(R.id.txtSearchExercise);
+        loadingSpinner = view.findViewById(R.id.loading_spinner_listexer);
+        txtNoExercises = view.findViewById(R.id.txtNoExercises);
         textToolbar = getActivity().findViewById(R.id.textToolbar);
         editButtonToolbar = getActivity().findViewById(R.id.editButtonToolbar);
     }
@@ -88,7 +97,25 @@ public class ListOfExercisesFragment extends Fragment {
         listOfExercisesRecView.setAdapter(listOfExercisesAdapter);
         listOfExercisesRecView.setLayoutManager((new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false)));
 
-        exercises = Utils.getUniqueItemsString(getActivity());
-        listOfExercisesAdapter.setItems(exercises);
+        // Get the data from the database from a service thread
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+        executorService.submit(new Runnable() {
+            @Override
+            public void run() {
+                exercises = Utils.getUniqueItemsString(getActivity());
+                SystemClock.sleep(250); // sleep 0.25s to let the drawer close (not a very good solution)
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        listOfExercisesAdapter.setItems(exercises);
+                        loadingSpinner.setVisibility(View.GONE);
+                        if (exercises.isEmpty()) {
+                            txtNoExercises.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+            }
+        });
     }
 }

@@ -108,8 +108,10 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.about:
                         clearBackstack();
-                        IODatabaseManager ioDatabaseManager = new IODatabaseManager(getApplicationContext());
-                        pickFile();
+                        Fragment dbAboutFragment= new AboutFragment();
+                        FragmentTransaction dbAboutFragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        dbAboutFragmentTransaction.replace(R.id.container , dbAboutFragment);
+                        dbAboutFragmentTransaction.commit();
                         break;
                     default:
                         break;

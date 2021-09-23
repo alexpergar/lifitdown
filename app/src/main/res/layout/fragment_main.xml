@@ -42,6 +42,17 @@
                 android:layout_marginBottom="16dp"
                 android:src="@drawable/ic_add_circle"/>
 
+            <TextView
+                android:id="@+id/txtNoExercises"
+                style="@style/fonts_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btnAddExercise"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="-14dp"
+                android:text="Click here to add an exercise!"
+                android:visibility="gone"/>
+
         </RelativeLayout>
 
     </androidx.core.widget.NestedScrollView>
