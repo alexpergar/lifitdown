@@ -33,7 +33,7 @@ import java.util.ArrayList;
 public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
 
     private ArrayList<Set> items = new ArrayList<>();
-    private Context context;
+    private final Context context;
     private boolean editable = false;
     private int exerciseId;
     private boolean onlyShow;
@@ -62,16 +62,13 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
         // If parent ExerciseAdapter is in editmode, put yourself in edit mode as well
         if (editable) {
             holder.btnDeleteSet.setVisibility(View.VISIBLE);
-            holder.btnDeleteSet.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    View focusedView = ((Activity) context).getCurrentFocus();
-                    if (null != focusedView) focusedView.clearFocus();
-                    items.remove(position);
-                    Utils.updateSets(context, exerciseId, items);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, getItemCount());
-                }
+            holder.btnDeleteSet.setOnClickListener(v -> {
+                View focusedView = ((Activity) context).getCurrentFocus();
+                if (null != focusedView) focusedView.clearFocus();
+                items.remove(position);
+                Utils.updateSets(context, exerciseId, items);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, getItemCount());
             });
         } else {
             holder.btnDeleteSet.setVisibility(View.GONE);
@@ -86,9 +83,9 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
         } else {
             // check which weight unit is checked on settings
             if (sharedPreferences.getString("weightUnit", "kg").equals("kg")) {
-                holder.txtIconWeight.setText("kg");
+                holder.txtIconWeight.setText(R.string.kg);
             } else {
-                holder.txtIconWeight.setText("lb");
+                holder.txtIconWeight.setText(R.string.lb);
             }
             holder.txtWeight.setText(items.get(position).getWeight());
             // if onlyShow, don't let the user change the data in the fields
@@ -200,12 +197,9 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
             if (onlyShow) {
                 holder.checkboxFailure.setClickable(false);
             } else {
-                holder.checkboxFailure.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        items.get(position).setFailure(isChecked);
-                        Utils.updateSets(context, exerciseId,items);
-                    }
+                holder.checkboxFailure.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    items.get(position).setFailure(isChecked);
+                    Utils.updateSets(context, exerciseId,items);
                 });
             }
         }
@@ -327,20 +321,17 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
                 holder.imageNote.setImageResource(R.drawable.ic_note_full);
                 holder.imageNote.setColorFilter(Color.BLACK);
             }
-            holder.imageNote.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("exerciseId", exerciseId);
-                    bundle.putInt("setId", items.get(position).getId());
-                    bundle.putString("noteText", items.get(position).getNote());
-                    Fragment noteFragment = new NoteFragment();
-                    noteFragment.setArguments(bundle);
-                    FragmentTransaction noteTransaction = ((FragmentActivity)context).getSupportFragmentManager().beginTransaction();
-                    noteTransaction.replace(R.id.container , noteFragment);
-                    noteTransaction.addToBackStack(null);
-                    noteTransaction.commit();
-                }
+            holder.imageNote.setOnClickListener(v -> {
+                Bundle bundle = new Bundle();
+                bundle.putInt("exerciseId", exerciseId);
+                bundle.putInt("setId", items.get(position).getId());
+                bundle.putString("noteText", items.get(position).getNote());
+                Fragment noteFragment = new NoteFragment();
+                noteFragment.setArguments(bundle);
+                FragmentTransaction noteTransaction = ((FragmentActivity)context).getSupportFragmentManager().beginTransaction();
+                noteTransaction.replace(R.id.container , noteFragment);
+                noteTransaction.addToBackStack(null);
+                noteTransaction.commit();
             });
         }
 

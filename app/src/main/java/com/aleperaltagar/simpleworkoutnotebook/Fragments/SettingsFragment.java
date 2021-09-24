@@ -10,9 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,7 +37,7 @@ public class SettingsFragment extends Fragment {
 
         // Change toolbar text and disable click listener
         textToolbar.setOnClickListener(null);
-        textToolbar.setText("Settings");
+        textToolbar.setText(R.string.settings);
         editButtonToolbar.setVisibility(View.GONE);
 
         // Set preferences as they were saved
@@ -158,19 +156,13 @@ public class SettingsFragment extends Fragment {
         checkNote.setOnCheckedChangeListener(checkListener);
         checkPersonal1.setOnCheckedChangeListener(checkListener);
         checkPersonal2.setOnCheckedChangeListener(checkListener);
-        rbKg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.putString("weightUnit", "kg");
-                editor.commit();
-            }
+        rbKg.setOnClickListener(v -> {
+            editor.putString("weightUnit", "kg");
+            editor.commit();
         });
-        rbLb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.putString("weightUnit", "lb");
-                editor.commit();
-            }
+        rbLb.setOnClickListener(v -> {
+            editor.putString("weightUnit", "lb");
+            editor.commit();
         });
     }
 

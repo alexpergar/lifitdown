@@ -33,14 +33,12 @@ import java.util.concurrent.Executors;
 
 public class MainFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
-    private static final String TAG = "MainFragment";
-
+    private final Fragment context = this;
     private RecyclerView exercisesRecView;
     private ExerciseAdapter exercisesAdapter;
     private ImageView btnAddExercise;
     private TextView textToolbar, txtNoExercises;
     private ImageView editButtonToolbar;
-    private Fragment context = this;
     private Calendar currentDay;
     private ProgressBar loadingSpinner;
     private boolean editMode = false;
@@ -64,38 +62,29 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
         editButtonToolbar.setImageResource(R.drawable.ic_edit);
 
         // Toolbar date picker on date click
-        textToolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment datePicker = new DatePickerFragment(currentDay);
-                datePicker.setTargetFragment(context, 1);
-                datePicker.show(getFragmentManager(), "date picker");
-            }
+        textToolbar.setOnClickListener(v -> {
+            DialogFragment datePicker = new DatePickerFragment(currentDay);
+            datePicker.setTargetFragment(context, 1);
+            datePicker.show(getFragmentManager(), "date picker");
         });
 
         // Toolbar button to edit mode
         editButtonToolbar.setVisibility(View.VISIBLE);
-        editButtonToolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editMode = !editMode;
-                editButtonToolbar.setVisibility(View.GONE);
-                toolbarLoadingSpinner.setVisibility(View.VISIBLE);
-                if (editMode) {
-                    editButtonToolbar.setImageResource(R.drawable.ic_check);
-                } else {
-                    editButtonToolbar.setImageResource(R.drawable.ic_edit);
-                }
-                // Do the action after setting the loading spinner rolling
-                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        exercisesAdapter.switchEditMode(editMode);
-                        editButtonToolbar.setVisibility(View.VISIBLE);
-                        toolbarLoadingSpinner.setVisibility(View.GONE);
-                    }
-                }, 0);
+        editButtonToolbar.setOnClickListener(v -> {
+            editMode = !editMode;
+            editButtonToolbar.setVisibility(View.GONE);
+            toolbarLoadingSpinner.setVisibility(View.VISIBLE);
+            if (editMode) {
+                editButtonToolbar.setImageResource(R.drawable.ic_check);
+            } else {
+                editButtonToolbar.setImageResource(R.drawable.ic_edit);
             }
+            // Do the action after setting the loading spinner rolling
+            new Handler(Looper.getMainLooper()).postDelayed( () -> {
+                exercisesAdapter.switchEditMode(editMode);
+                editButtonToolbar.setVisibility(View.VISIBLE);
+                toolbarLoadingSpinner.setVisibility(View.GONE);
+            }, 0);
         });
 
         // If this view exists (because it was backstacked), load it
@@ -107,13 +96,10 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
             initViews(view);
 
             // Add new exercise button
-            btnAddExercise.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Exercise newExercise = new Exercise(currentDay);
-                    exercisesAdapter.addNewExercise(newExercise);
-                    txtNoExercises.setVisibility(View.GONE);
-                }
+            btnAddExercise.setOnClickListener(v -> {
+                Exercise newExercise = new Exercise(currentDay);
+                exercisesAdapter.addNewExercise(newExercise);
+                txtNoExercises.setVisibility(View.GONE);
             });
 
             // Set everything for the current date
@@ -138,25 +124,19 @@ public class MainFragment extends Fragment implements DatePickerDialog.OnDateSet
         // Get the data from the database from a service thread
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
-        executorService.submit(new Runnable() {
-            @Override
-            public void run() {
-                exercises = Utils.getItemsByDate(getActivity(), day);
-                SystemClock.sleep(250); // sleep 0.25s to let the drawer close (not a very good solution)
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadingSpinner.setVisibility(View.GONE);
-                        btnAddExercise.setVisibility(View.VISIBLE);
-                        if (null != exercises) {
-                            exercisesAdapter.setItems(exercises);
-                        }
-                        if (exercises.isEmpty()){
-                            txtNoExercises.setVisibility(View.VISIBLE);
-                        }
-                    }
-                });
-            }
+        executorService.submit( () -> {
+            exercises = Utils.getItemsByDate(getActivity(), day);
+            SystemClock.sleep(250); // sleep 0.25s to let the drawer close (not a very good solution)
+            handler.post( () -> {
+                loadingSpinner.setVisibility(View.GONE);
+                btnAddExercise.setVisibility(View.VISIBLE);
+                if (null != exercises) {
+                    exercisesAdapter.setItems(exercises);
+                }
+                if (exercises.isEmpty()){
+                    txtNoExercises.setVisibility(View.VISIBLE);
+                }
+            });
         });
     }
 

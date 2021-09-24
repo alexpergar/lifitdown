@@ -28,9 +28,8 @@ import java.util.ArrayList;
 public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHolder>{
 
     private ArrayList<Exercise> items = new ArrayList<>();
-    private Context context;
+    private final Context context;
     private boolean editable;
-    private ArrayList<String> everyUniqueExercise;
 
     public ExerciseAdapter(Context context) {
         this.context = context;
@@ -49,23 +48,20 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         holder.exerciseName.removeTextChangedListener(holder.textWatcher);
 
         // Load every unique exercise name in the database into an ArrayList and put them in an adapter for the exerciseName
-        everyUniqueExercise = Utils.getUniqueItemsString(context);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, everyUniqueExercise);
+        ArrayList<String> everyUniqueExercise = Utils.getUniqueItemsString(context);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, everyUniqueExercise);
         holder.exerciseName.setAdapter(adapter);
 
         // Name of the exercise
         holder.exerciseName.setText(items.get(position).getName());
 
         // Transition to exercise's previous marks fragment when clicked
-        holder.btnPreviousMarks.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment exerciseFragment = new ExerciseFragment(items.get(position).getName());
-                FragmentTransaction transaction = ((FragmentActivity)context).getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.container , exerciseFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
+        holder.btnPreviousMarks.setOnClickListener(v -> {
+            Fragment exerciseFragment = new ExerciseFragment(items.get(position).getName());
+            FragmentTransaction transaction = ((FragmentActivity)context).getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.container , exerciseFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         });
 
         // Setting the sets recyclerview
@@ -75,12 +71,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         holder.setsRecView.setLayoutManager((new LinearLayoutManager(context, RecyclerView.VERTICAL, false)));
 
         // Button to add a new set
-        holder.btnAddSet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setsAdapter.addEmptySet();
-            }
-        });
+        holder.btnAddSet.setOnClickListener(v -> setsAdapter.addEmptySet());
 
         // Save what is being written as each character is introduced
         holder.exerciseName.addTextChangedListener(holder.textWatcher = new TextWatcher() {
@@ -100,14 +91,11 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         });
 
         // Button to delete the exercise
-        holder.btnDeleteExercise.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.deleteExercise(context, items.get(position).getId());
-                items.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, getItemCount());
-            }
+        holder.btnDeleteExercise.setOnClickListener(v -> {
+            Utils.deleteExercise(context, items.get(position).getId());
+            items.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, getItemCount());
         });
 
         // If edit mode is enabled (through button click on menu) show the button and inform the sets adapter

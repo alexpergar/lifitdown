@@ -22,7 +22,7 @@ import java.util.Calendar;
 public class IODatabaseManager {
 
     private static final String TAG = "IODatabaseManager";
-    private Context context;
+    private final Context context;
 
     public IODatabaseManager(Context context) {
         this.context = context;

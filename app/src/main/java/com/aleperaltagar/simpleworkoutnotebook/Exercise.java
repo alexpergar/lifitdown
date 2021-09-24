@@ -14,8 +14,6 @@ import java.util.Calendar;
 @Entity(tableName = "exercises")
 public class Exercise {
 
-    private static final String TAG = "Exercise";
-
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String name;
@@ -69,10 +67,6 @@ public class Exercise {
 
     public ArrayList<Set> getSets() {
         return sets;
-    }
-
-    public void setSets(ArrayList<Set> sets) {
-        this.sets = sets;
     }
 
     @Override

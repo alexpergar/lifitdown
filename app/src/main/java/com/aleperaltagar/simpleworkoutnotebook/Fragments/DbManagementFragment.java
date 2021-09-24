@@ -40,47 +40,30 @@ public class DbManagementFragment extends Fragment {
 
         // Change toolbar text and disable click listener
         textToolbar.setOnClickListener(null);
-        textToolbar.setText("Data management");
+        textToolbar.setText(R.string.data_management);
         editButtonToolbar.setVisibility(View.GONE);
 
         // Set click listeners
-        btnExport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                IODatabaseManager ioDatabaseManager = new IODatabaseManager(getActivity());
-                ioDatabaseManager.exportDatabase();
-            }
+        btnExport.setOnClickListener(v -> {
+            IODatabaseManager ioDatabaseManager = new IODatabaseManager(getActivity());
+            ioDatabaseManager.exportDatabase();
         });
 
-        btnImport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity)getActivity()).pickFile();
-            }
-        });
+        btnImport.setOnClickListener(v -> ((MainActivity)getActivity()).pickFile());
 
-        btnDeleteDb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Warning")
-                        .setMessage("Are you sure you want to delete the database?\nData cannot be recovered.")
-                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Utils.deleteDatabase(getActivity());
-                                Toast.makeText(getActivity(), "Database deleted successfully", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+        btnDeleteDb.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Warning")
+                    .setMessage("Are you sure you want to delete the database?\nData cannot be recovered.")
+                    .setPositiveButton("Delete", (dialog, which) -> {
+                        Utils.deleteDatabase(getActivity());
+                        Toast.makeText(getActivity(), "Database deleted successfully", Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("Cancel", (dialog, which) -> {
 
-                            }
-                        })
-                        .create()
-                        .show();
-            }
+                    })
+                    .create()
+                    .show();
         });
 
         return view;

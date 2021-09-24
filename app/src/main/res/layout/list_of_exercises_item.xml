@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="16dp"
-            android:text="Exercise name"
+            android:text="@string/exercise_name"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/moreButton"

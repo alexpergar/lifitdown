@@ -50,7 +50,7 @@
                 android:layout_below="@id/btnAddExercise"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="-14dp"
-                android:text="Click here to add an exercise!"
+                android:text="@string/click_here_to_add_an_exercise"
                 android:visibility="gone"/>
 
         </RelativeLayout>

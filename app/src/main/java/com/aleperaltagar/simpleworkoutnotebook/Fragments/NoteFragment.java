@@ -48,22 +48,19 @@ public class NoteFragment extends Fragment {
 
         // Set the note and a click listener to commit changes
         txtOnNote.setText(noteText);
-        btnDone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Saves all the sets in this exercise changing this set note
-                Utils.updateSetNoteById(getContext(), exerciseId, setId, txtOnNote.getText().toString());
-                Fragment notebookFragment = new MainFragment(calendar);
-                // Transaction to the notebook's corresponding day
-                FragmentTransaction notebookTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                notebookTransaction.replace(R.id.container , notebookFragment);
-                int backStackEntryCount = getActivity().getSupportFragmentManager().getBackStackEntryCount();
-                // Delete all the fragment backstack
-                for (int i = 0; i < backStackEntryCount; i++) {
-                    getActivity().getSupportFragmentManager().popBackStack();
-                }
-                notebookTransaction.commit();
+        btnDone.setOnClickListener(v -> {
+            // Saves all the sets in this exercise changing this set note
+            Utils.updateSetNoteById(getContext(), exerciseId, setId, txtOnNote.getText().toString());
+            Fragment notebookFragment = new MainFragment(calendar);
+            // Transaction to the notebook's corresponding day
+            FragmentTransaction notebookTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+            notebookTransaction.replace(R.id.container , notebookFragment);
+            int backStackEntryCount = getActivity().getSupportFragmentManager().getBackStackEntryCount();
+            // Delete all the fragment backstack
+            for (int i = 0; i < backStackEntryCount; i++) {
+                getActivity().getSupportFragmentManager().popBackStack();
             }
+            notebookTransaction.commit();
         });
 
         return view;

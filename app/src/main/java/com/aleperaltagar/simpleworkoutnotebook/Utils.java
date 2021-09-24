@@ -7,10 +7,8 @@ import com.aleperaltagar.simpleworkoutnotebook.DatabaseFiles.ExercisesDatabase;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Comparator;
 
 public class Utils {
-    private static int ID_SET = 0;
 
     public static ArrayList<Exercise> getAllItems(Context context) {
         return (ArrayList<Exercise>) ExercisesDatabase.getInstance(context).exerciseDao().getAllItems();
@@ -23,7 +21,7 @@ public class Utils {
 
         // If there are no exercises, return an empty list of strings
         if (exercises.equals(new ArrayList<Exercise>())) {
-            return new ArrayList<String>();
+            return new ArrayList<>();
         }
 
         // Look if it has been already added an exercise with the same name
@@ -41,12 +39,7 @@ public class Utils {
         }
 
         // Sort the exercises alphabetically
-        uniqueExercises.sort(new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                return o1.compareToIgnoreCase(o2);
-            }
-        });
+        uniqueExercises.sort((o1, o2) -> o1.compareToIgnoreCase(o2));
 
         if (uniqueExercises.get(0).equals("")) {
             uniqueExercises.remove(0);
@@ -55,9 +48,8 @@ public class Utils {
         return uniqueExercises;
     }
 
-    public static boolean addExercise(Context context, Exercise exercise) {
+    public static void addExercise(Context context, Exercise exercise) {
         ExercisesDatabase.getInstance(context).exerciseDao().insert(exercise);
-        return true;
     }
 
     public static void updateSets(Context context, int exerciseId, ArrayList<Set> newSets) {

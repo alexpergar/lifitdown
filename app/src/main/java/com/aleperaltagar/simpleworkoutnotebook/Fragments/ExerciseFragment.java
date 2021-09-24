@@ -58,14 +58,11 @@ public class ExerciseFragment extends Fragment {
         textToolbar.setText(exerciseName);
         editButtonToolbar.setVisibility(View.GONE);
 
-        btnLoadMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int lastPosition = exercisesAdapter.loadMore();
-                Log.d(TAG, "onClick: " + exercises.size() + " " + lastPosition);
-                if (lastPosition == exercises.size()) {
-                    btnLoadMore.setVisibility(View.GONE);
-                }
+        btnLoadMore.setOnClickListener(v -> {
+            int lastPosition = exercisesAdapter.loadMore();
+            Log.d(TAG, "onClick: " + exercises.size() + " " + lastPosition);
+            if (lastPosition == exercises.size()) {
+                btnLoadMore.setVisibility(View.GONE);
             }
         });
 
@@ -89,26 +86,20 @@ public class ExerciseFragment extends Fragment {
         // Load the items in the background and meanwhile show a loading spinner
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
-        executorService.submit(new Runnable() {
-            @Override
-            public void run() {
-                exercises = Utils.getItemsByName(getActivity(), name);
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadingSpinner.setVisibility(View.GONE);
-                        if (null != exercises) {
-                            // Set the first five items. If every item was displayed (-1 returned), set button visibility to GONE
-                            int nextPositionLoaded = exercisesAdapter.setItems(exercises);
-                            if (nextPositionLoaded == -1) {
-                                btnLoadMore.setVisibility(View.GONE);
-                            } else {
-                                btnLoadMore.setVisibility(View.VISIBLE);
-                            }
-                        }
+        executorService.submit( () -> {
+            exercises = Utils.getItemsByName(getActivity(), name);
+            handler.post( () -> {
+                loadingSpinner.setVisibility(View.GONE);
+                if (null != exercises) {
+                    // Set the first five items. If every item was displayed (-1 returned), set button visibility to GONE
+                    int nextPositionLoaded = exercisesAdapter.setItems(exercises);
+                    if (nextPositionLoaded == -1) {
+                        btnLoadMore.setVisibility(View.GONE);
+                    } else {
+                        btnLoadMore.setVisibility(View.VISIBLE);
                     }
-                });
-            }
+                }
+            });
         });
     }
 

@@ -21,7 +21,7 @@
                 android:id="@+id/TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Keep track of:"
+                android:text="@string/keep_track_of"
                 android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -40,73 +40,73 @@
                     android:id="@+id/checkWeight"
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
-                    android:text="Weight" />
+                    android:text="@string/weight" />
 
                 <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/checkReps"
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
-                    android:text="Repetitions" />
+                    android:text="@string/repetitions" />
 
                 <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/checkRestingTime"
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
-                    android:text="Resting time" />
+                    android:text="@string/resting_time" />
 
                 <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/checkExecutionTime"
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
-                    android:text="Execution time" />
+                    android:text="@string/execution_time" />
 
                 <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/checkFailure"
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
-                    android:text="Failure" />
+                    android:text="@string/failure" />
 
                 <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/checkRIR"
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
-                    android:text="RIR" />
+                    android:text="@string/rir" />
 
                 <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/checkTargetReps"
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
-                    android:text="Target reps" />
+                    android:text="@string/target_reps" />
 
                 <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/checkMood"
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
-                    android:text="Mood" />
+                    android:text="@string/mood" />
 
                 <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/checkComment"
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
-                    android:text="Comment" />
+                    android:text="@string/comment" />
 
                 <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/checkNote"
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
-                    android:text="Note" />
+                    android:text="@string/note" />
 
                 <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/checkPersonal1"
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
-                    android:text="Personalized 1" />
+                    android:text="@string/personalized_1" />
 
                 <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/checkPersonal2"
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
-                    android:text="Personalized 2" />
+                    android:text="@string/personalized_2" />
 
             </GridLayout>
 
@@ -116,7 +116,7 @@
                 android:layout_height="wrap_content"
                 style="@style/fonts_color"
                 android:layout_marginTop="8dp"
-                android:text="Weight unit:"
+                android:text="@string/weight_unit"
                 android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/gridLayout" />
@@ -136,17 +136,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:text="Kilograms (kg)" />
+                    android:text="@string/kilograms_kg" />
 
                 <RadioButton
                     android:id="@+id/rbLb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:text="Pounds (lb)" />
+                    android:text="@string/pounds_lb" />
 
             </RadioGroup>
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

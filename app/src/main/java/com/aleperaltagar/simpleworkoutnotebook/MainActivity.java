@@ -1,6 +1,5 @@
 package com.aleperaltagar.simpleworkoutnotebook;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +11,6 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.MenuItem;
 
 import com.aleperaltagar.simpleworkoutnotebook.Fragments.AboutFragment;
 import com.aleperaltagar.simpleworkoutnotebook.Fragments.DbManagementFragment;
@@ -31,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
     private static final int READ_REQUEST_CODE = 10;
     private DrawerLayout drawer;
     private NavigationView navigationView;
@@ -68,51 +65,48 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
 
         // Navigation drawer menu
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.notebook:
-                        clearBackstack();
-                        Fragment notebookFragment = new MainFragment(currentDay);
-                        FragmentTransaction notebookTransaction = getSupportFragmentManager().beginTransaction();
-                        notebookTransaction.replace(R.id.container, notebookFragment);
-                        notebookTransaction.commit();
-                        break;
-                    case R.id.exercises:
-                        clearBackstack();
-                        Fragment listOfExercisesFragment = new ListOfExercisesFragment();
-                        FragmentTransaction listOfExercisesTransaction = getSupportFragmentManager().beginTransaction();
-                        listOfExercisesTransaction.replace(R.id.container, listOfExercisesFragment);
-                        listOfExercisesTransaction.commit();
-                        break;
-                    case R.id.settings:
-                        clearBackstack();
-                        Fragment settingsFragment = new SettingsFragment();
-                        FragmentTransaction settingsTransaction = getSupportFragmentManager().beginTransaction();
-                        settingsTransaction.replace(R.id.container, settingsFragment);
-                        settingsTransaction.commit();
-                        break;
-                    case R.id.manageDatabase:
-                        clearBackstack();
-                        Fragment dbManagementFragment = new DbManagementFragment();
-                        FragmentTransaction dbManagementTransaction = getSupportFragmentManager().beginTransaction();
-                        dbManagementTransaction.replace(R.id.container, dbManagementFragment);
-                        dbManagementTransaction.commit();
-                        break;
-                    case R.id.about:
-                        clearBackstack();
-                        Fragment dbAboutFragment = new AboutFragment();
-                        FragmentTransaction dbAboutFragmentTransaction = getSupportFragmentManager().beginTransaction();
-                        dbAboutFragmentTransaction.replace(R.id.container, dbAboutFragment);
-                        dbAboutFragmentTransaction.commit();
-                        break;
-                    default:
-                        break;
-                }
-                drawer.closeDrawers();
-                return false;
+        navigationView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.notebook:
+                    clearBackstack();
+                    Fragment notebookFragment = new MainFragment(currentDay);
+                    FragmentTransaction notebookTransaction = getSupportFragmentManager().beginTransaction();
+                    notebookTransaction.replace(R.id.container, notebookFragment);
+                    notebookTransaction.commit();
+                    break;
+                case R.id.exercises:
+                    clearBackstack();
+                    Fragment listOfExercisesFragment = new ListOfExercisesFragment();
+                    FragmentTransaction listOfExercisesTransaction = getSupportFragmentManager().beginTransaction();
+                    listOfExercisesTransaction.replace(R.id.container, listOfExercisesFragment);
+                    listOfExercisesTransaction.commit();
+                    break;
+                case R.id.settings:
+                    clearBackstack();
+                    Fragment settingsFragment = new SettingsFragment();
+                    FragmentTransaction settingsTransaction = getSupportFragmentManager().beginTransaction();
+                    settingsTransaction.replace(R.id.container, settingsFragment);
+                    settingsTransaction.commit();
+                    break;
+                case R.id.manageDatabase:
+                    clearBackstack();
+                    Fragment dbManagementFragment = new DbManagementFragment();
+                    FragmentTransaction dbManagementTransaction = getSupportFragmentManager().beginTransaction();
+                    dbManagementTransaction.replace(R.id.container, dbManagementFragment);
+                    dbManagementTransaction.commit();
+                    break;
+                case R.id.about:
+                    clearBackstack();
+                    Fragment dbAboutFragment = new AboutFragment();
+                    FragmentTransaction dbAboutFragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    dbAboutFragmentTransaction.replace(R.id.container, dbAboutFragment);
+                    dbAboutFragmentTransaction.commit();
+                    break;
+                default:
+                    break;
             }
+            drawer.closeDrawers();
+            return false;
         });
 
     }

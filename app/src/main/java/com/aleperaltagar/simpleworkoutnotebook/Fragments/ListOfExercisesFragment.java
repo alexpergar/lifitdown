@@ -30,7 +30,6 @@ import java.util.concurrent.Executors;
 
 public class ListOfExercisesFragment extends Fragment {
 
-    private static final String TAG = "ListOfExercisesFragment";
     ArrayList<String> exercises = new ArrayList<>();
     private RecyclerView listOfExercisesRecView;
     private ListOfExercisesAdapter listOfExercisesAdapter;
@@ -51,7 +50,7 @@ public class ListOfExercisesFragment extends Fragment {
 
         // Change toolbar text and disable click listener
         textToolbar.setOnClickListener(null);
-        textToolbar.setText("Exercises");
+        textToolbar.setText(R.string.exercises);
         editButtonToolbar.setVisibility(View.GONE);
 
         // Search after each character is written
@@ -105,22 +104,16 @@ public class ListOfExercisesFragment extends Fragment {
         // Get the data from the database from a service thread
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
-        executorService.submit(new Runnable() {
-            @Override
-            public void run() {
-                exercises = Utils.getUniqueItemsString(getActivity());
-                SystemClock.sleep(250); // sleep 0.25s to let the drawer close (not the best solution)
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        listOfExercisesAdapter.setItems(exercises);
-                        loadingSpinner.setVisibility(View.GONE);
-                        if (exercises.isEmpty()) {
-                            txtNoExercises.setVisibility(View.VISIBLE);
-                        }
-                    }
-                });
-            }
+        executorService.submit(() -> {
+            exercises = Utils.getUniqueItemsString(getActivity());
+            SystemClock.sleep(250); // sleep 0.25s to let the drawer close (not the best solution)
+            handler.post(() -> {
+                listOfExercisesAdapter.setItems(exercises);
+                loadingSpinner.setVisibility(View.GONE);
+                if (exercises.isEmpty()) {
+                    txtNoExercises.setVisibility(View.VISIBLE);
+                }
+            });
         });
     }
 }

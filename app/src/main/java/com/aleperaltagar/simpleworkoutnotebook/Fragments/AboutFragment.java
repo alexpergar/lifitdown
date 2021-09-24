@@ -35,7 +35,7 @@ public class AboutFragment extends Fragment {
         initViews(view);
 
         // Disable toolbar click listener and edit button visibility
-        textToolbar.setText("About");
+        textToolbar.setText(R.string.about);
         textToolbar.setOnClickListener(null);
         editButtonToolbar.setVisibility(View.GONE);
 

@@ -26,7 +26,7 @@ public class ExerciseShowAdapter extends RecyclerView.Adapter<ExerciseShowAdapte
 
     private ArrayList<Exercise> items = new ArrayList<>();
     private ArrayList<Exercise> preloadedItems = new ArrayList<>();
-    private Context context;
+    private final Context context;
     private int nextPositionLoaded;
 
     public ExerciseShowAdapter(Context context) {
@@ -47,15 +47,12 @@ public class ExerciseShowAdapter extends RecyclerView.Adapter<ExerciseShowAdapte
         String dateString = DateFormat.getDateInstance().format(items.get(position).getCalendar().getTime());
         holder.date.setText(dateString);
         holder.orderNumber.setText(Utils.getPositionInDay(context, items.get(position)));
-        holder.date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment mainFragment = new MainFragment(items.get(position).getCalendar());
-                FragmentTransaction transaction = ((FragmentActivity)context).getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.container , mainFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
+        holder.date.setOnClickListener(v -> {
+            Fragment mainFragment = new MainFragment(items.get(position).getCalendar());
+            FragmentTransaction transaction = ((FragmentActivity)context).getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.container , mainFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         });
 
         // Setting the sets recyclerview

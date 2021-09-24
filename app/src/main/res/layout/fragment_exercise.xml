@@ -41,7 +41,7 @@
                 android:id="@+id/btnLoadMore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Load more exercises"
+                android:text="@string/load_more_exercises"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:visibility="gone"
                 android:layout_marginVertical="12dp"
