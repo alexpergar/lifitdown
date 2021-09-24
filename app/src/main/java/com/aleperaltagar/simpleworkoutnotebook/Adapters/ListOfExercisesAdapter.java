@@ -1,4 +1,4 @@
-package com.aleperaltagar.simpleworkoutnotebook;
+package com.aleperaltagar.simpleworkoutnotebook.Adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -18,6 +18,9 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.aleperaltagar.simpleworkoutnotebook.Fragments.ExerciseFragment;
+import com.aleperaltagar.simpleworkoutnotebook.R;
+import com.aleperaltagar.simpleworkoutnotebook.Utils;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
@@ -42,7 +45,10 @@ public class ListOfExercisesAdapter extends RecyclerView.Adapter<ListOfExercises
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
+        // Put exercise name
         holder.listOfExercisesName.setText(items.get(position));
+
+        // When clicked, see that exercise previous entries
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,6 +60,7 @@ public class ListOfExercisesAdapter extends RecyclerView.Adapter<ListOfExercises
             }
         });
 
+        // Three dots button to rename or delete the exercise
         holder.moreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -2,15 +2,12 @@ package com.aleperaltagar.simpleworkoutnotebook;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.aleperaltagar.simpleworkoutnotebook.DatabaseFiles.ExercisesDatabase;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
-
-import static android.content.ContentValues.TAG;
 
 public class Utils {
     private static int ID_SET = 0;
@@ -19,11 +16,12 @@ public class Utils {
         return (ArrayList<Exercise>) ExercisesDatabase.getInstance(context).exerciseDao().getAllItems();
     }
 
+    // Get a list of Strings with every unique exercise name
     public static ArrayList<String> getUniqueItemsString(Context context)  {
         ArrayList<String> uniqueExercises = new ArrayList<>();
         ArrayList<Exercise> exercises =  (ArrayList<Exercise>) ExercisesDatabase.getInstance(context).exerciseDao().getAllItems();
 
-        // If there is no exercises, return an empty list of strings
+        // If there are no exercises, return an empty list of strings
         if (exercises.equals(new ArrayList<Exercise>())) {
             return new ArrayList<String>();
         }

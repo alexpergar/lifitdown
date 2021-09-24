@@ -1,14 +1,12 @@
-package com.aleperaltagar.simpleworkoutnotebook;
+package com.aleperaltagar.simpleworkoutnotebook.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +14,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -26,6 +22,10 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.aleperaltagar.simpleworkoutnotebook.Fragments.NoteFragment;
+import com.aleperaltagar.simpleworkoutnotebook.R;
+import com.aleperaltagar.simpleworkoutnotebook.Set;
+import com.aleperaltagar.simpleworkoutnotebook.Utils;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
@@ -55,15 +55,9 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        // Eliminate the textWatcher, as the placeholder changes item when recycled
 
-
-        // Show only desired fields
+        // Show only desired fields (defined by settings)
         hideNotUsedFields(holder, position, sharedPreferences);
-        
-        // Set the data for the sets
-
-        // Text changed listeners for fields in the sets
 
         // If parent ExerciseAdapter is in editmode, put yourself in edit mode as well
         if (editable) {

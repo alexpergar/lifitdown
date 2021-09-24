@@ -1,6 +1,5 @@
-package com.aleperaltagar.simpleworkoutnotebook;
+package com.aleperaltagar.simpleworkoutnotebook.Fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -12,7 +11,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,13 +18,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.aleperaltagar.simpleworkoutnotebook.Exercise;
+import com.aleperaltagar.simpleworkoutnotebook.Adapters.ExerciseShowAdapter;
+import com.aleperaltagar.simpleworkoutnotebook.R;
+import com.aleperaltagar.simpleworkoutnotebook.Utils;
+
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ExerciseFragment extends Fragment {
 
+    private static final String TAG = "ExerciseFragment";
     private String exerciseName;
     private RecyclerView exercisesRecView;
     private ExerciseShowAdapter exercisesAdapter;
@@ -35,8 +38,6 @@ public class ExerciseFragment extends Fragment {
     private ProgressBar loadingSpinner;
     private Button btnLoadMore;
     private ArrayList<Exercise> exercises;
-
-    private static final String TAG = "ExerciseFragment";
 
     public ExerciseFragment(String exerciseName) {
         this.exerciseName = exerciseName;
@@ -48,6 +49,7 @@ public class ExerciseFragment extends Fragment {
         // Inflate layout
         View view = inflater.inflate(R.layout.fragment_exercise, container, false);
 
+        // Initialize views and recycler view
         initViews(view);
         initRecViews(exerciseName);
 

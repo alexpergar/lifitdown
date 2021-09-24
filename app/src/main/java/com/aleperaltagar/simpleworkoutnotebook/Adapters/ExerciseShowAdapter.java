@@ -1,15 +1,10 @@
-package com.aleperaltagar.simpleworkoutnotebook;
+package com.aleperaltagar.simpleworkoutnotebook.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -18,6 +13,10 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.aleperaltagar.simpleworkoutnotebook.Exercise;
+import com.aleperaltagar.simpleworkoutnotebook.Fragments.MainFragment;
+import com.aleperaltagar.simpleworkoutnotebook.R;
+import com.aleperaltagar.simpleworkoutnotebook.Utils;
 import com.google.android.material.card.MaterialCardView;
 
 import java.text.DateFormat;
@@ -85,9 +84,11 @@ public class ExerciseShowAdapter extends RecyclerView.Adapter<ExerciseShowAdapte
         return nextPositionLoaded;
     }
 
+    // Used to load five more exercises to the list
     public int loadMore() {
         ArrayList<Exercise> nextBatch;
         int newNextPositionLoaded;
+
         if (preloadedItems.size() - nextPositionLoaded > 5) {
             newNextPositionLoaded = nextPositionLoaded + 5;
         } else {
@@ -97,7 +98,7 @@ public class ExerciseShowAdapter extends RecyclerView.Adapter<ExerciseShowAdapte
         items.addAll(nextBatch);
         notifyItemRangeInserted(nextPositionLoaded, newNextPositionLoaded);
         nextPositionLoaded = newNextPositionLoaded;
-//        Toast.makeText(context, String.valueOf(nextPositionLoaded), Toast.LENGTH_SHORT).show();
+
         return nextPositionLoaded;
     }
 

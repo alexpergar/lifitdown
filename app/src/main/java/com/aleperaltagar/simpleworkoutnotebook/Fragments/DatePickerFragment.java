@@ -1,4 +1,4 @@
-package com.aleperaltagar.simpleworkoutnotebook;
+package com.aleperaltagar.simpleworkoutnotebook.Fragments;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

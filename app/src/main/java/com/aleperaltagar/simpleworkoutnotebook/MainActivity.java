@@ -6,31 +6,24 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.aleperaltagar.simpleworkoutnotebook.DatabaseFiles.ExercisesDatabase;
+import com.aleperaltagar.simpleworkoutnotebook.Fragments.AboutFragment;
+import com.aleperaltagar.simpleworkoutnotebook.Fragments.DbManagementFragment;
+import com.aleperaltagar.simpleworkoutnotebook.DatabaseFiles.IODatabaseManager;
+import com.aleperaltagar.simpleworkoutnotebook.Fragments.ListOfExercisesFragment;
+import com.aleperaltagar.simpleworkoutnotebook.Fragments.MainFragment;
+import com.aleperaltagar.simpleworkoutnotebook.Fragments.SettingsFragment;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -39,19 +32,20 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    private static final int READ_REQUEST_CODE = 10;
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private MaterialToolbar toolbar;
-
-    private static final int READ_REQUEST_CODE = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Load shared preferences
         Utils.initiateSharedPreferences(this);
 
+        // Initialize the views
         initViews();
 
         // Set today's date
@@ -61,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         currentDay.set(Calendar.SECOND, 0);
         currentDay.set(Calendar.MILLISECOND, 0);
 
-        // Fragment manager
+        // Fragment manager. Load MainFragment as default (notebook)
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new MainFragment(currentDay)).commit();
 
         // Navigation drawer
@@ -73,44 +67,44 @@ public class MainActivity extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        // Navigation drawer listener
+        // Navigation drawer menu
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch(item.getItemId()) {
+                switch (item.getItemId()) {
                     case R.id.notebook:
                         clearBackstack();
                         Fragment notebookFragment = new MainFragment(currentDay);
                         FragmentTransaction notebookTransaction = getSupportFragmentManager().beginTransaction();
-                        notebookTransaction.replace(R.id.container , notebookFragment);
+                        notebookTransaction.replace(R.id.container, notebookFragment);
                         notebookTransaction.commit();
                         break;
                     case R.id.exercises:
                         clearBackstack();
                         Fragment listOfExercisesFragment = new ListOfExercisesFragment();
                         FragmentTransaction listOfExercisesTransaction = getSupportFragmentManager().beginTransaction();
-                        listOfExercisesTransaction.replace(R.id.container , listOfExercisesFragment);
+                        listOfExercisesTransaction.replace(R.id.container, listOfExercisesFragment);
                         listOfExercisesTransaction.commit();
                         break;
                     case R.id.settings:
                         clearBackstack();
                         Fragment settingsFragment = new SettingsFragment();
                         FragmentTransaction settingsTransaction = getSupportFragmentManager().beginTransaction();
-                        settingsTransaction.replace(R.id.container , settingsFragment);
+                        settingsTransaction.replace(R.id.container, settingsFragment);
                         settingsTransaction.commit();
                         break;
                     case R.id.manageDatabase:
                         clearBackstack();
                         Fragment dbManagementFragment = new DbManagementFragment();
                         FragmentTransaction dbManagementTransaction = getSupportFragmentManager().beginTransaction();
-                        dbManagementTransaction.replace(R.id.container , dbManagementFragment);
+                        dbManagementTransaction.replace(R.id.container, dbManagementFragment);
                         dbManagementTransaction.commit();
                         break;
                     case R.id.about:
                         clearBackstack();
-                        Fragment dbAboutFragment= new AboutFragment();
+                        Fragment dbAboutFragment = new AboutFragment();
                         FragmentTransaction dbAboutFragmentTransaction = getSupportFragmentManager().beginTransaction();
-                        dbAboutFragmentTransaction.replace(R.id.container , dbAboutFragment);
+                        dbAboutFragmentTransaction.replace(R.id.container, dbAboutFragment);
                         dbAboutFragmentTransaction.commit();
                         break;
                     default:
@@ -129,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
     }
 
+    // Used for importing a database
     public void pickFile() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -136,13 +131,15 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, READ_REQUEST_CODE);
     }
 
+    // Clear backstack, used when menu option selected
     private void clearBackstack() {
         FragmentManager fm = getSupportFragmentManager();
-        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+        for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
             fm.popBackStack();
         }
     }
 
+    // Used for importing a database
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

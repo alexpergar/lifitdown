@@ -1,17 +1,14 @@
-package com.aleperaltagar.simpleworkoutnotebook;
+package com.aleperaltagar.simpleworkoutnotebook.Adapters;
 
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -20,6 +17,10 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.aleperaltagar.simpleworkoutnotebook.Exercise;
+import com.aleperaltagar.simpleworkoutnotebook.Fragments.ExerciseFragment;
+import com.aleperaltagar.simpleworkoutnotebook.R;
+import com.aleperaltagar.simpleworkoutnotebook.Utils;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
@@ -30,7 +31,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
     private Context context;
     private boolean editable;
     private ArrayList<String> everyUniqueExercise;
-    private static final String TAG = "ExerciseAdapter";
 
     public ExerciseAdapter(Context context) {
         this.context = context;
@@ -82,6 +82,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
             }
         });
 
+        // Save what is being written as each character is introduced
         holder.exerciseName.addTextChangedListener(holder.textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -118,6 +119,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         setsAdapter.switchEditMode(editable);
     }
 
+    // Switch the edit mode (on or off)
     public void switchEditMode(boolean editMode) {
         this.editable = editMode;
         notifyDataSetChanged();

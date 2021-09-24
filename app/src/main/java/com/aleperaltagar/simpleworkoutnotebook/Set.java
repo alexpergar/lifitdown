@@ -44,14 +44,6 @@ public class Set {
         this.id = id;
     }
 
-    public int getExerciseId() {
-        return exerciseId;
-    }
-
-    public void setExerciseId(int exerciseId) {
-        this.exerciseId = exerciseId;
-    }
-
     public String getReps() {
         return reps;
     }
@@ -62,6 +54,10 @@ public class Set {
 
     public String getWeight() {
         return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
     }
 
     public String getRestingTime() {
@@ -142,10 +138,6 @@ public class Set {
 
     public void setPersonal2(String personal2) {
         this.personal2 = personal2;
-    }
-
-    public void setWeight(String weight) {
-        this.weight = weight;
     }
 
     @Override

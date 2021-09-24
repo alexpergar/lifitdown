@@ -6,14 +6,13 @@ import androidx.room.Query;
 
 import com.aleperaltagar.simpleworkoutnotebook.Exercise;
 
-import java.util.Calendar;
 import java.util.List;
 
 @Dao
 public interface ExerciseDao {
 
     @Query("DELETE FROM exercises")
-    public void nukeTable();
+    void nukeTable();
 
     @Insert
     void insert(Exercise exercise);

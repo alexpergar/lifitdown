@@ -1,8 +1,6 @@
-package com.aleperaltagar.simpleworkoutnotebook;
+package com.aleperaltagar.simpleworkoutnotebook.Fragments;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.aleperaltagar.simpleworkoutnotebook.R;
+import com.aleperaltagar.simpleworkoutnotebook.Utils;
 
 import java.util.Calendar;
 
@@ -68,6 +69,7 @@ public class NoteFragment extends Fragment {
         return view;
     }
 
+    // Pick arguments from previous fragment
     private void pickUpArguments() {
         exerciseId = getArguments().getInt("exerciseId");
         setId = getArguments().getInt("setId");

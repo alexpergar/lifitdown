@@ -1,4 +1,4 @@
-package com.aleperaltagar.simpleworkoutnotebook;
+package com.aleperaltagar.simpleworkoutnotebook.Fragments;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.aleperaltagar.simpleworkoutnotebook.R;
 
 import java.util.Calendar;
 

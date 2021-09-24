@@ -1,4 +1,4 @@
-package com.aleperaltagar.simpleworkoutnotebook;
+package com.aleperaltagar.simpleworkoutnotebook.Fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -13,8 +13,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+
+import com.aleperaltagar.simpleworkoutnotebook.DatabaseFiles.IODatabaseManager;
+import com.aleperaltagar.simpleworkoutnotebook.MainActivity;
+import com.aleperaltagar.simpleworkoutnotebook.R;
+import com.aleperaltagar.simpleworkoutnotebook.Utils;
 
 public class DbManagementFragment extends Fragment {
 
@@ -31,6 +35,7 @@ public class DbManagementFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_database_management, container, false);
 
+        // Initialize views
         initViews(view);
 
         // Change toolbar text and disable click listener

@@ -1,32 +1,28 @@
-package com.aleperaltagar.simpleworkoutnotebook;
+package com.aleperaltagar.simpleworkoutnotebook.DatabaseFiles;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Environment;
-import android.provider.DocumentsContract;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 
-import com.aleperaltagar.simpleworkoutnotebook.DatabaseFiles.SetsConverter;
+import com.aleperaltagar.simpleworkoutnotebook.Exercise;
+import com.aleperaltagar.simpleworkoutnotebook.Set;
+import com.aleperaltagar.simpleworkoutnotebook.Utils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class IODatabaseManager {
 
-    private Context context;
-
     private static final String TAG = "IODatabaseManager";
+    private Context context;
 
     public IODatabaseManager(Context context) {
         this.context = context;

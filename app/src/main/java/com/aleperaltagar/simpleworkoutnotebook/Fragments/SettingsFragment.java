@@ -1,4 +1,4 @@
-package com.aleperaltagar.simpleworkoutnotebook;
+package com.aleperaltagar.simpleworkoutnotebook.Fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,6 +18,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.aleperaltagar.simpleworkoutnotebook.R;
+
 public class SettingsFragment extends Fragment {
 
     private CheckBox checkWeight, checkReps, checkRestingTime, checkExecutionTime, checkFailure,
@@ -32,6 +34,7 @@ public class SettingsFragment extends Fragment {
         // Inflate layout
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
+        // Initialize views
         initViews(view);
 
         // Change toolbar text and disable click listener
@@ -43,7 +46,7 @@ public class SettingsFragment extends Fragment {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("prefs",0);
         setPreferences(sharedPreferences);
 
-        // Set on check listeners
+        // Set check listeners
         SharedPreferences.Editor editor = sharedPreferences.edit();
         setClickListeners(editor);
 

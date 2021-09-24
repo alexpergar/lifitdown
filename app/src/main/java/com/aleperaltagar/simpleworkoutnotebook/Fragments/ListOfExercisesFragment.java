@@ -1,4 +1,4 @@
-package com.aleperaltagar.simpleworkoutnotebook;
+package com.aleperaltagar.simpleworkoutnotebook.Fragments;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -6,7 +6,6 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.aleperaltagar.simpleworkoutnotebook.Adapters.ListOfExercisesAdapter;
+import com.aleperaltagar.simpleworkoutnotebook.R;
+import com.aleperaltagar.simpleworkoutnotebook.Utils;
+
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,14 +31,13 @@ import java.util.concurrent.Executors;
 public class ListOfExercisesFragment extends Fragment {
 
     private static final String TAG = "ListOfExercisesFragment";
-
+    ArrayList<String> exercises = new ArrayList<>();
     private RecyclerView listOfExercisesRecView;
     private ListOfExercisesAdapter listOfExercisesAdapter;
     private TextView textToolbar, txtNoExercises;
     private ImageView editButtonToolbar;
     private AutoCompleteTextView txtSearchExercise;
     private ProgressBar loadingSpinner;
-    ArrayList<String> exercises = new ArrayList<>();
 
     @Nullable
     @Override
@@ -43,6 +45,7 @@ public class ListOfExercisesFragment extends Fragment {
         // Inflate layout
         View view = inflater.inflate(R.layout.fragment_list_of_exercises, container, false);
 
+        // Initialize views and recycler view
         initViews(view);
         initRecViews();
 
@@ -51,6 +54,7 @@ public class ListOfExercisesFragment extends Fragment {
         textToolbar.setText("Exercises");
         editButtonToolbar.setVisibility(View.GONE);
 
+        // Search after each character is written
         txtSearchExercise.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -71,6 +75,7 @@ public class ListOfExercisesFragment extends Fragment {
         return view;
     }
 
+    // Put the list of exercises found in the adapter
     private void searchExercise(String txtExercise){
         txtExercise = txtExercise.toLowerCase();
         ArrayList<String> foundItems = new ArrayList<>();
@@ -104,7 +109,7 @@ public class ListOfExercisesFragment extends Fragment {
             @Override
             public void run() {
                 exercises = Utils.getUniqueItemsString(getActivity());
-                SystemClock.sleep(250); // sleep 0.25s to let the drawer close (not a very good solution)
+                SystemClock.sleep(250); // sleep 0.25s to let the drawer close (not the best solution)
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
